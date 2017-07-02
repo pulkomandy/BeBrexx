@@ -7,6 +7,9 @@
 #ifndef __TWINDOW_H__
 #define __TWINDOW_H__
 
+#include <Message.h>
+#include <Window.h>
+
 #include "consolebe.hh"
 
 class TextWindow : public BWindow {
@@ -19,7 +22,7 @@ public:
 
    status_t      Save(BMessage *message);
 
-   ConsoleBe    *GetTextView(void) { return(textview); };
+   ConsoleBe    *GetTextView(void) { return textview; }
 
 private:
    void         _InitWindow(void);

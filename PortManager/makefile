@@ -59,7 +59,7 @@ LIBS= PortManager be
 #	be recursive, so include all of the paths where libraries can
 #	be found.  Directories where source files are found are
 #	automatically included.
-LIBPATHS= /boot/home/config/lib
+LIBPATHS= ../PortLib/$(OBJ_DIR)
 
 #	additional paths to look for system headers
 #	thes use the form: #include <header>
@@ -104,5 +104,5 @@ LINKER_FLAGS =
 
 
 ## include the makefile-engine
-include /boot/develop/etc/makefile-engine
+include /system/develop/etc/makefile-engine
 

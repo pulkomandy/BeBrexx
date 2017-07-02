@@ -42,7 +42,7 @@ Console::Console()
    hold    = havecr = havelf = havelines = 0;
    cmdlinesize = 0;
    cmdlen  = 0;
-   CurParse = &ParseChar;
+   CurParse = &Console::ParseChar;
    prompt  = NULL;
    return;
 }
@@ -469,7 +469,7 @@ void Console::ParseChar(long c)
             }
             break;
          case ESC :
-            CurParse = &ParseESC;
+            CurParse = &Console::ParseESC;
             pars[0]  = 0;
             parcount = 0;
             break;
@@ -519,12 +519,12 @@ void Console::ParseChar(long c)
             }
             break;
          case CSI :
-            CurParse = &ParseCSI;
+            CurParse = &Console::ParseCSI;
             pars[0]  = 0;
             parcount = 0;
             break;
          case SS3 :
-            CurParse = &ParseKeypad;
+            CurParse = &Console::ParseKeypad;
             break;
          default   :
             size = cmdlen - cursor;
@@ -564,18 +564,18 @@ void Console::ParseESC(long c)
    //printf("ParseESC\r\n");
    switch (c) {
       case ESC :
-         CurParse   = &ParseESC;
+         CurParse   = &Console::ParseESC;
          pars[0]    = 0;
          parcount   = 0;
          break;
       case CAN :
-         CurParse   = &ParseChar;
+         CurParse   = &Console::ParseChar;
          break;
       case '[' :
-         CurParse   = &ParseCSI;
+         CurParse   = &Console::ParseCSI;
          break;
       case 'O' :
-         CurParse   = &ParseKeypad;
+         CurParse   = &Console::ParseKeypad;
          break;
       default:
          ParseFinalESC(c);
@@ -597,16 +597,16 @@ void Console::ParseCSI(long c)
       case ';' :
          break;
       case CAN :
-         CurParse = &ParseChar;
+         CurParse = &Console::ParseChar;
          break;
       case ESC :
-         CurParse = &ParseESC;
+         CurParse = &Console::ParseESC;
          pars[0]  = 0;
          parcount = 0;
          break;
       default:
          if ((c <= '9') && (c >= '0')) {
-            CurParse = &ParseLong;
+            CurParse = &Console::ParseLong;
             ParseLong(c);
          }
          else {
@@ -627,17 +627,17 @@ void Console::ParseLong(long c)
 {
    //printf("ParseLong\r\n");
    if (c == ESC) {
-      CurParse = &ParseESC;
+      CurParse = &Console::ParseESC;
       pars[0] = 0;
       parcount = 0;
    }
    else if (c == CAN) {
-      CurParse = &ParseChar;
+      CurParse = &Console::ParseChar;
    }
    else if (c < '0' || c > '9') {
       parcount++;
       pars[parcount] = 0;
-      CurParse = &ParseCSI;
+      CurParse = &Console::ParseCSI;
       ParseCSI(c);
    }
    else {
@@ -674,7 +674,7 @@ void Console::ParseFinalESC(long c)
          break;
    }
 
-   CurParse = &ParseChar;
+   CurParse = &Console::ParseChar;
    return;
 }
 
@@ -705,7 +705,7 @@ void Console::ParseFinalCSI(long c)
          break;
    }
 
-   CurParse = &ParseChar;
+   CurParse = &Console::ParseChar;
    return;
 }
 
@@ -736,7 +736,7 @@ void Console::ParseKeypad(long c)
          break;
    }
 
-   CurParse   = &ParseChar;
+   CurParse   = &Console::ParseChar;
    return;
 }
 

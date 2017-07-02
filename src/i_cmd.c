@@ -15,8 +15,6 @@
  *
  */
 
-#include <stdlib.h>
-#include "instruct.h"
 
 #ifdef __MSDOS__
 # include <io.h>
@@ -29,12 +27,15 @@
 # define S_IWRITE 1    /* //// Den ta briskei!!!! */
 #elif defined(__MPW__)
 #else
-# ifdef __UNIX__
+# if defined(__UNIX__) || defined(__HAIKU__)
 #    include <unistd.h>
 # endif
 # include <sys/stat.h>
 # include <fcntl.h>
 #endif
+
+#include <stdlib.h>
+#include "instruct.h"
 
 #ifndef S_IREAD
 # define S_IREAD 0

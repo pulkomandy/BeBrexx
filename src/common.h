@@ -16,6 +16,8 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <sys/param.h>
+
 /* ----------- some global data type definitions ------------------ */
 typedef unsigned char   byte;
 typedef unsigned short  word;
@@ -32,8 +34,6 @@ typedef int boolean;
 #define NO    0
 
 /* ------------------ comonly used macros -------------------- */
-#define MAX(a,b)  (((a)>(b))?(a):(b))
-#define MIN(a,b)  (((a)<(b))?(a):(b))
 #define RANGE(a,x,b)  (((x)<(a))?(a): ( ((x)>(b))?(b):(x)))
 #define IN_RANGE(a,x,b)  (((a) <= (x)) && ((x) <= (b)))
 

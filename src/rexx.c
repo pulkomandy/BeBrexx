@@ -220,7 +220,7 @@ void release_everything( void )
 } /* release_everything */
 
 /* -------------------------------------------------------------- */
-#ifdef __BEOS__
+#ifdef __HAIKU__
 int BRexxMain(int argc, char **argv)
 #else
 int main(     int argc, char **argv)

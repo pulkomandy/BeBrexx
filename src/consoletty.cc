@@ -57,7 +57,7 @@ void ConsoleTTY::setraw(long wait)
 {
    if (cooked == 0) return;
 
-#ifdef __BEOS__
+#ifdef __HAIKU__
    waitflag = wait;
    struct termios termios;
 
@@ -142,7 +142,7 @@ ConsoleTTY::~ConsoleTTY()
 void ConsoleTTY::setcooked(void)
 {
    if (cooked) return;
-#ifdef __BEOS__
+#ifdef __HAIKU__
    if (fd >= 0) {
       tcsetattr(fd, TCSANOW, &savedsettings);
       if (waitflag == 0) {

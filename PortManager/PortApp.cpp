@@ -6,6 +6,8 @@
 // Willy Langeveld, february 1999
 //
 #include <Application.h>
+#include <PropertyInfo.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

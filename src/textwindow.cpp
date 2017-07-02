@@ -300,7 +300,7 @@ status_t TextWindow::Save(BMessage *message)
          if (savemessage) {
             delete savemessage;
          }
-         savemessage = new BMessage(message);
+         savemessage = new BMessage(*message);
       }
    }
    return err;

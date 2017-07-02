@@ -3,7 +3,7 @@
 *   Commands and functions that apply to BeOS
 *
 **/
-#ifdef __BEOS__
+#ifdef __HAIKU__
 
 #include <stdio.h>
 #include <stdlib.h>

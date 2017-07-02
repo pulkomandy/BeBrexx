@@ -226,7 +226,7 @@ void set_trace( char *str )
 /* ---------------------------------------------------------- */
 Lstr *readline ( Lstr **A)
 {
-#ifdef __BEOS__
+#ifdef __HAIKU__
     extern char *bgetline(char *, long);
     char buff[4096];
     int i, l;

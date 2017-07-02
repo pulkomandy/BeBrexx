@@ -11,7 +11,7 @@
 #include "console.hh"
 
 #define BSD_COMP
-#ifdef __BEOS__
+#ifdef __HAIKU__
 #include <termios.h>
 #endif
 #include <sys/ioctl.h>
@@ -35,7 +35,7 @@ protected:
 private:
    int fd;
 
-#ifndef __BEOS__
+#ifndef __HAIKU__
    sgttyb savedsettings;
 #else
    termios savedsettings;

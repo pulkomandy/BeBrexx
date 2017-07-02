@@ -1,6 +1,7 @@
 #ifndef _propdump_h
 #define _propdump_h
 
+#include <PropertyInfo.h>
 #include <String.h>
 
 enum {

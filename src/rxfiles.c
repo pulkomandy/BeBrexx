@@ -12,7 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#ifdef __sun__
+#if defined(__sun__) || defined(__HAIKU__)
 #include <dirent.h>
 #else
 #include <sys/dir.h>

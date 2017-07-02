@@ -8,7 +8,7 @@
 #ifndef CONSOLEBE__H
 #define CONSOLEBE__H
 
-#ifdef __BEOS__
+#ifdef __HAIKU__
 #include <SupportKit.h>
 #include <TextView.h>
 #include <string.h>

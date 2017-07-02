@@ -17,6 +17,9 @@
 
 #include "PortManager.h"
 
+#include <PropertyInfo.h>
+#include <Roster.h>
+
 #define PORTMANAGER_MIME "application/x-PortManager"
 
 PortManager::PortManager() :

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ByteOrder.h>
 #include <Message.h>
 #include <PropertyInfo.h>
 #include "PropDump.h"

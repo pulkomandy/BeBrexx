@@ -15,7 +15,7 @@ all: 		portlib portman squares brexx
 portlib:
 		@echo " "
 		@echo "Creating PortManager library, and copying to /boot/home/config/lib"
-		-cd PortLib; make; copyattr -d $(OBJ_DIR)/libPortManager.so /boot/home/config/lib
+		-cd PortLib; make; #copyattr -d $(OBJ_DIR)/libPortManager.so /boot/home/config/lib
 
 
 portman:
