@@ -1,0 +1,330 @@
+
+                                                                        o o
+                                                                      ____oo_
+                                 R  E  X  X                  1992    /||    |\
+                                  Ver. 1.3                    BNV     ||    |
+                                 for  MSDOS                 MARMITA   `.___.'
+                                  and Unix
+
+
+€€€€€€€≤≤≤≤≤≤≤±±±±±±±∞∞∞∞∞∞∞   T Z A P A W A R E   ∞∞∞∞∞∞∞±±±±±±±≤≤≤≤≤≤≤€€€€€€€
+
+
+                 Author.........Bill N. Vlachoudis
+                 Address........Eirinis 6
+                                TK555 35 Pilea
+                                Thessaloniki Greece
+                 Computer addr..bnv@nisyros.physics.auth.gr
+                                V.Vlachoudis@cern.ch
+                                bill@evros.med.auth.gr
+                 Http addr......http://nisyros.physics.auth.gr:10000
+                 Telephone......+30-94-380183
+                 Date...........Dec-1996
+
+
+
+     About this REXX intrpreter
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+        I wrote this version of REXX because I though that it would be
+     nice to have my own REXX interpreter do use it with DOS, UNIX and
+     also as a macro language for my programs. This REXX interpreter is
+     all written in ANSI C, and I didn't try to make it fast but to as
+     much more flexible, with very little restrictions and also to be
+     compatible with IBM REXX from CMS. This is a FREEWARE program!
+
+
+
+     What is REXX?
+     ~~~~~~~~~~~~~
+         REXX is a programming language designed by Michael Cowlishaw of
+     IBM UK Laboratories.  In his own words:  "REXX is a procedural
+     language that allows programs and algorithms to be written in a
+     clear and structured way."
+
+         Syntactically, REXX doesn't look that different from any other
+     procedural language.  Here's a simple REXX program:
+
+                 /* Count some numbers */
+
+                 say "Counting..."
+                 do i = 1 to 10
+                     say "Number" i
+                 end
+
+         What makes REXX different from most other languages is its
+     capability for being used as a _macro language_ for arbitrary
+     applications.  The idea here is that application developers don't
+     have to design their own macro languages and accompanying
+     interpreters. Instead they use REXX as the basis for that language
+     and support the REXX programming interface. When a REXX program
+     runs and comes across an expression or function that isn't part of
+     the base language definition, it can ask the application if it
+     knows how to handle it.  The application only has to support
+     features that are specific to it, freeing the developer from
+     handling the mundane task of writing a language interpreter.  And
+     if all applications use REXX as their macro language, the user only
+     has to learn one language instead of a dozen.
+
+
+
+     What is the reference book for REXX?
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         The "standard" reference for REXX is Mike Cowlishaw's _The REXX
+     Language: A Practical Approach To Programming_, currently in its
+     second edition.  (The first edition had "REXX" in blue on the
+     cover, the second edition has it in red instead.)  Mike's book is
+     often referred to as either "TRL" or "the red book".  Until the
+     ANSI committee releases its standard, TRL is the document that
+     defines what REXX is.  (See the bibliography below for details on
+     TRL.)
+
+
+
+     Information on ANSI and REXX
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         The American National Standards Institute (ANSI) sets national
+     standards for various things in the United States, including
+     programming languages. The X3J18 REXX Standards Committee has been
+     established to defined a formal standard for the REXX language,
+     using TRL as its base document. The Committee meets 3 or 4 times a
+     year and holds ongoing discussions throughout the year.  Members of
+     X3J18 mostly include REXX implementors and some users, but anyone
+     can participate.  More information on X3J18 can be had from Brian
+     Marks (chair), marks@winvmd.vnet.ibm.com or Neil Milsted
+     (vice-chair), nfnm@wrkgrp.com.
+
+
+
+     Newsgroups and mailing lists
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         On Usenet the group comp.lang.rexx exists for discussion of
+     REXX in all its variations.  Currently the comp.lang.rexx newsgroup
+     is also gatewayed with the REXXLIST mailing list (i.e., anything
+     that gets posted to the newsgroup is sent to everyone on the
+     mailing list and anything that is sent to the mailing list gets
+     posted to the newsgroup).
+
+         Those without Usenet access will be interested primarily in the
+     various mailing lists available.  The following information, kindly
+     provided by Scott Ophof, describes how to subscribe to the various
+     lists and what lists exist.  Note that these mailing lists are
+     BITNET-based and Internet sites might have use the proper Internet
+     domain-based names (given at the end) instead of the BITNET node
+     names.
+
+          -- Subscribing to the list:
+
+                 To receive postings from a list discussing REXX, send
+                 e-mail to:
+
+                        LISTSERV@some-node-address
+
+                 with the following line as body:
+
+                        SUBSCRIBE list-name Your-full-name
+
+                 See list below for which "list-name" to use.
+                 "Your-full-name" is your NAME, *not* your e-mail
+                 address...
+
+                 Example: If I wanted to read more about what is going
+                 on with the REXX compiler for VM, I'd send e-mail to
+                 LISTSERV@UCF1VM and insert as the first and only line:
+
+                        SUBSCRIBE REXXCOMP F. Scott Ophof
+
+                 North Americans may want to send their subscription
+                 request to LISTSERV@uga.cc.uga.edu, Europeans might
+                 want to send their request to LISTSERV@DEARN, those in
+                 the Far East to LISTSERV@TWNMOE10, etc.  The list
+                 server you send your request to will automatically
+                 forward that request to the server nearest you if
+                 possible.
+
+           -- Receiving postings:
+
+                 Once you've subscribed to the list, any mail sent to
+                 the list will automatically be sent to you as well, at
+                 the address you used to subscribe to the list.  The
+                 mail will come to you just like the rest of you email.
+
+           -- Posting to the list:
+
+                 To post something to the list, use the email address
+                 listed below under "List Address".  You can also simply
+                 just reply to a posting you've received in your mailbox
+                 as is usually done (as long as it uses the "Reply-To:"
+                 header line).  Note that the list server will not
+                 normally send you a copy of anything you post.
+
+           -- Mailing lists:
+
+                 List Name        List Address             Discusses
+
+                 AREXX-L          AREXX-L@UCF1VM           Amiga REXX
+                 PC-REXX          PC-REXX@UCF1VM           Personal REXX
+                 REXXCOMP         REXXCOMP@UCF1VM          REXX Compiler
+                 TSO-REXX         TSO-REXX@UCF1VM          TSO REXX
+                 UREXX-L          UREXX-L@Liverpool.ac.uk  Unix REXX
+                 VM-REXX          REXXLIST@HEARN           VM/SP REXX
+                                  VM-REXX@MARIST             "
+                                  VM-REXX@OHSTVMA            "
+                                  VM-REXX@UCF1VM             "
+                 REXX-L           REXX-L@UIUCVMD           generic REXX
+                                  REXX-L@UALTAVM             "
+                 REXXLIST         REXXLIST@DEARN             "
+                                  REXXLIST@EB0UB011          "
+                                  REXXLIST@FINHUTC           "
+                                  REXXLIST@OHSTVMA           "
+                                  REXXLIST@POLYGRAF          "
+                                  REXXLIST@TWNMOE10          "
+                                  REXXLIST@UCF1VM            "
+                                  REXXLIST@UGA               "
+
+                 Note:
+                      - The list-names "REXXLIST" and "REXX-L" refer to
+                        the same discussion group, i.e.
+                        non-implementation-specific REXX.
+                      - Subscription requests and cancelling of
+                        subscriptions *must* be sent to
+                        <LISTSERV@that-node>, *not* to
+                        <list-name@that-node>.
+                      - With one exception, BITnet addresses have been
+                        used here.` See the "Address Translation List"
+                        for the Internet form of these addresses.
+                      - Please save the item you will receive on
+                        acceptance of your subscription detailing what
+                        to send where; it also contains info on how to
+                        cancel your subscription...
+
+
+           -- Address Translation List::
+
+
+                 BITnet node      Internet address
+                 DEARN            %DEARN.BITnet@nic.surfnet.nl
+                 EB0UB011         @sic.ub.es
+                 FINHUTC          @finhutc.hut.fi
+                 HEARN            @nic.surfnet.nl
+                 MARIST           @VM.Marist.EDU
+                 OHSTVMA          @OHSTVMA.ACS.OHIO-STATE.EDU
+                 POLYGRAF         @graf.poly.edu
+                 TWNMOE10         %TWNMOE10.BITnet@nic.surfnet.nl
+                 UALTAVM          @vm.ucs.ualberta.ca
+                 UCF1VM           @UCF1VM.CC.UCF.EDU
+                 UGA              @uga.cc.uga.edu
+                 UIUCVMD          %UIUCVMD.BITnet@uga.cc.uga.edu
+
+
+
+     Selected bibliography
+     ~~~~~~~~~~~~~~~~~~~~~
+         This is from Mike Cowlishaw.  Note that a VERY complete
+     bibliography can be found in _The REXX Handbook_.  (Any updates to
+     the bibliography should be sent to Linda Suskind Green,
+     greenls@gdlvm7.vnet.ibm.com, who will pass them on to the
+     appropriate persons.)
+
+           Modern Programming Using REXX -- Robert P. O'Hara and David
+           R. Gomberg
+               In English:   ISBN 0-13-597311-2   Prentice-Hall, 1985
+                             ISBN 0-13-579329-5     (Second edition), 1988
+
+           The REXX Language -- M. F. Cowlishaw
+               In English:   ISBN 0-13-780735-X   Prentice-Hall, 1985
+                             ISBN 0-13-780651-5     (Second edition), 1990
+               In German:    ISBN 3-446-15195-8   Carl Hanser Verlag, 1988
+                             ISBN 0-13-780784-8   P-H International, 1988
+               In Japanese:  ISBN 4-7649-0136-6   Kindai-kagaku-sha, 1988
+
+           REXX In the TSO Environment -- Gabriel F. Gargiulo
+               ISBN 0-89435-354-3, QED Information Systems Inc.,
+               Order #CC3543;  320 pages, 1990
+
+           Practical Usage of REXX -- Anthony S. Rudd
+               ISBN 0-13-682790-X, Ellis Horwood (Simon & Schuster), 1990
+
+           Using ARexx on the Amiga -- Chris Zamara and Nick Sullivan
+               ISBN 1-55755-114-6, 424pp+diskette, Abacus, 1991
+
+           The REXX Handbook -- Edited by Gabe Goldberg and Phil Smith III
+               ISBN 0-07-023682-8, 672pp, McGraw Hill, 1991
+
+           Amiga Programmer's Guide to ARexx -- Eric Giguere
+               Commodore-Amiga, Inc., 1991
+
+           Programming in REXX -- Charles Daney
+               ISBN 0-07-015305-1, 300pp, McGraw Hill, 1992
+
+           Command Language Cookbook for Mainframes, Minicomputers,
+                and PCs: DOS/OS/2, Batch Language, CLIST, DCL, Perl, REXX
+                 -- Hallett German
+               Van Nostrand Reinhold, 1992
+               ISBN 0-442-00801-5, 366 pages, paperback, $49.95
+
+         Note that IBM also publishes a whole slew of REXX-related
+         documents, sometimes referring to REXX as the "SAA Procedures
+         Language".  One of these documents is the SAA CPI Procedures
+         Language Level 2 Reference, SC24-5549.
+
+
+     Note.
+     ~~~~~
+         The previous paragraphs, (from "What is REXX?" till here ) are
+     adapted from Eric Giguere <giguere@CSG.UWATERLOO.CA> mail with
+     subject "REXX Frequently Asked Questions" in the "General REXX
+     Discussion List" at REXXLIST@DEARN.BITNET.
+
+
+
+
+     The special features of REXX interpreter are:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       o  All rexx commands and functions have easy and very simple
+          names.
+       o  Rexx variables are not distiquish in strings, integer, reals
+          and any other kind of variables. All variables are handled as
+          strings and only in arithmetic operations variables must
+          evaluate to a acceptable number.
+          ie.    ' -2' + 3    will evaluate to '1'
+                left(21+6,1)  will return '2'
+                left('amo',1) will return 'a'
+       o  There is no need to declare any variable,function before you
+          use it All variables are evaluate to their name, the first
+          time they used.
+       o  There is no any limitation in the size of each variable (or
+          array) except the convential memory (and in DOS 1 segment 64k,
+          for each variable).
+       o  When rexx intrepreter doesn't understand one command it pass
+          it to the operating system (default) to execute it, or to any
+          other program you want.
+       o  Rexx has a large library with lot of string handling
+          functions.
+       o  A very powerful PARSE command, where you can parse a string
+          (from several sources) according to a template in anything you
+          like.
+
+
+     This rexx interpreter has also:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       o  A mathematic library with all the scientific functions,
+          sin,cos...
+       o  The ability to create new libraries for rexx programs
+       o  Very flexible routines for file I/O
+       o  It has its own stack that make very easy the communication
+          with the operating system.
+       o  Any program that uses the standard input/output can be used as
+          rexx function.
+          ie  a = 'cd'()  /* returns the current directory, by calling CD
+                             command of DOS */
+       o  PARADOX support, most of Padadox Engine routines are now
+          available to be called from rexx.
+
+
+     DISCLAIMER
+     ~~~~~~~~~~
+     THE SOFTWARE  REFERENCED  IS MADE  AVAILABLE AS - IS. THE AUTHOR
+     MAKES NO WARRANTY ABOUT THE  SOFTWARE AND ITS CONFORMITY TO ANY
+     APPLICATION. THE AUTHOR IS NOT RESPONSIBLE FOR ANY DAMAGE, LOSS OF
+     DATA, OR LOSS OF MONEY CAUSED BY THIS PROGRAM.
+

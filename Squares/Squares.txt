@@ -1,0 +1,16 @@
+         File: Squares.zip
+       Author: Willy Langeveld
+ Support Page: 
+      Release: 1.0 1 Mar 99
+Compatibility: R4.1 Intel, R4.1 PPC
+     Location: contrib/develop
+  Description: A simple program that demonstrates use of the PortManager
+        Notes: This program is a simple example of the use of the PortManager,
+               a proposed way of making applications scriptable at a more
+               user-oriented level. The program implements a window with
+               a view. The view is scriptable and understands a few simple
+               commands.
+
+               Thanks to Michael Crawford for writing CircleToy, from which
+               this code started. It was rewritten from scratch eventually.
+

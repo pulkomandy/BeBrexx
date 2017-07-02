@@ -1,0 +1,119 @@
+     REXX V1.3      INTERNAL & BUGS                               o o
+                                                                ____oo_
+     Author: Bill N. Vlachoudis                        1992    /||    |\
+     Addr:   Eirinis 4, Pylaia,                         by      ||    |
+             Thessaloniki, 55535                       BNV      `.___.'
+             GREECE                                             MARMITA
+     Tel:    +33-4-50-99-1832
+     E-Mail: bnv@nisyros.physics.auth.gr
+             V.Vlachoudis@cern.ch
+     http:   http://nisyros.physics.auth.gr:10000
+
+     The following document describes some techical details and bugs
+     concerning this version of rexx, and it is normally out of common
+     interest.
+
+
+     Variables
+     ~~~~~~~~~
+        Variables are hold in a binary tree, where variables are added
+     when they are found in the program. No balancing is done to the
+     binary tree.
+     
+        Numeric digits exists as a command but has no effect.
+     
+        Each variable in rexx is a length prefix string, and it is kept
+     in memory in 3 different types, long, real, string according the
+     last operation that affect that variable.
+         ie.     a = 2          /* will be kept as string  (Length-prefixed) */
+                 a = 2 + 1      /* will be kept as integer (long) */
+                 a = 2 + 0.1    /* will be kept as real    (double) */
+
+        I use this scheme just to make a little bit faster the
+     expression evaluation. This approach has some disadvantages because
+     integer operations have a maximum of 2billion number so if you try
+     something like this
+              factorial = 1
+              do i = 1 to 50
+                 factorial = factorial * i
+              end
+     will result to 0 instead of the factorial of 50! To find the
+     correct result you have to fool the interpreter to think that
+     factorial is real and not integer, this can be done if you write
+     factorial = 1.0 ....
+     
+        You can easilly translate a variable to any format you like with
+     the following instructions
+             a = a + 0.0   /* will translate a to real */
+             a = trunc(a)  /* will translate a to integer */
+             a = a || ''   /* will translate a to string */
+     
+         Subscripts of a stem (array) are not translated to uppercase
+         and neither blanks are removed
+              so:     sub = 'mama mia'
+                  ara.sub = 3
+              will be kept in memory as a variable 'ARA.mama mia'
+     
+        Sometimes it is very important to know how a variable is kept in
+     memory (usually for the INTR function) so there is an extra option
+     in DATATYPE function "TYPE" that returns the way one variable is
+     hold.
+              DATATYPE(2,"TYPE")     -> "STRING"
+              DATATYPE(2+0.0,"TYPE") -> "REAL"
+              DATATYPE(2+0,"TYPE)    -> "INT"
+     
+        C routines are used for the translation of string to number, so
+     a string like '-  2' will be reported by DATATYPE as a NUMber when
+     rexx tries to evaluate it as a number it will return a value of 0
+     instead of -2, because of the spaces between the sign and the
+     number.
+
+        STEMS:  substitution to stems may be anything including strings
+     with any character. No translation to uppercase is done to subscripts
+     so:        lower = 'ma'  ; stem.lower   -->  'STEM.ma'
+                upper = 'MA'  ; setm.upper   -- > 'STEM.MA'
+     Stems can be initialized with a command like
+                stem. = 'Initial value'
+     
+
+     Functions
+     ~~~~~~~~~
+        Even though the depth nesting limitation is 250, stack in the
+     DOS version it will crash with nesting near 90.
+     
+        If a program or a dos command is used as an external rexx
+     function the interpreter will call COMMAND interpreter to execute
+     the command with its output redirected to a dummy file. The dummy
+     file will be created in the current directory or in a temporary
+     directory that is pointed by TEMP environment variable.
+     
+        There is a bug with the EXPOSE command after the procedure
+     declaration. If you expose twice a variable or if you expose a stem
+     variable (b.2) and also the entire stem (b.) will result in a fatal
+     error. So be careful and do not declare in the expose list more
+     than once a variable.
+
+        SIGNAL sometimes doesn't work properly, ie when you jump from
+     a DO-loop out of the loop.
+     
+        FORMAT arguments for formating the exponent are ignored.
+     
+        TRANSLATE sometimes wont work properly for strings with
+     characters above ASCII 127. Works OK for Greek character set.
+
+        VARTREE wont work properly with variables with non-printable
+     characters
+     
+     
+     Tracing
+     ~~~~~~~
+        MS-DOS even though it has return code (ERRORLEVEL) it doesn't
+     use it at all. So DOS internal commands always return a return code RC
+     0 even if the failed. Negative trace is equal to Error trace since
+     DOS & UNIX don't use negative return codes.
+     
+        There is a bug in the interactive tracing, sometimes you cannot
+     exit from the interactive debuging with 'trace o'.
+     
+        Tracing has some times weird results on some errors like
+     unmatched comments and quotes.

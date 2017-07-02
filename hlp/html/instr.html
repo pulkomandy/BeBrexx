@@ -1,0 +1,388 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Instructions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="expr.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="template.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Instructions                                      
+</H1>
+                                                        
+      Each REXX instruction is one ore more clauses, the first clause
+      is the one that identifies the instruction. Instructions end
+      with a semicolon or with a new line. One instruction may be
+      continued from one line to the next by using a comma at the end
+      of the line. Open strings or comments are not affected by line
+      ends.
+
+
+<H2>
+      The General Guidelines are:
+</H2>
+
+      <B>name</B>
+           refers to a variable, which can be assigned any value.
+           name is a symbol with the following exception: the
+           first character may not be a digit or a period. The
+           value of name is translated to uppercase before use, and
+           forms the initial value of the value of the variable.
+           Some valid names are:
+                <B>Fred  COST?  next  index   A.j</B>
+
+      <B>name:</B>
+           is a form of labels for <B>CALL</B> instructions, <B>SIGNAL</B>
+           instructions, and internal function calls. The colon
+           acts as a clause separator.
+
+      <B>template</B>
+           is a parsing template, described in a later section.
+
+      <B>instr</B>
+           is any one of the listed instructions.
+
+<H2>
+      The Instructions are:
+</H2>
+
+      <B>expression</B>
+           the value of expression is issued as a command, normally
+           to the command interpreter or to the specified environment
+           specified by the <B>ADDRESS</B> instruction. Look also the section
+           "Issuing Commands to Host System."
+           ie.         <B>'DIR' '*.exe'</B>
+
+      <B>name = [expr];</B>
+           is an assignment: the variable name is set to the value
+           of expr.
+           ie.       <B>fred = 'sunset'</B>
+                     <B>a    = 1 + 2 * 3</B>
+                     <B>a    = </B>           /* a contains '' */
+
+      <B>ADDRESS [<symbol | string> [expr]];</B>
+          redirect commands or a single command to a new
+          environment. <B>ADDRESS VALUE expr</B> may be used
+          for an evaluated environment name.
+          ie.       <B>address int2e 'dir'</B>  /* executes through int2e a dir cmd
+                    <B>address system</B>       /* all the following command will be
+                                            addressed to system */
+                    <B>env = 'dos'</B>
+                    <B>address value env</B>    /* change address to dos */
+
+      <B>ARG <template>;</B>
+          parse argument string(s) given to program or in an
+          internal routine into variables according to template.
+          Arguments are translated into uppercase before the parsing.
+          Short for <B>PARSE UPPER ARG</B>.
+          ie.   /* program is called with args  "autoexec.bat auto.old"
+                <B>arg src dest</B>
+                /* src = "AUTOEXEC.BAT", dest="AUTO.OLD" */
+
+                /* a function is called MARMITA('Bill',3)
+                <B>marmita:</B>
+                <B>arg firstarg, secondarg</B>
+                /* firstarg = "BILL", secondarg = "3" */
+
+      <B>CALL [symbol | string] [<expr>] [,<expr>]... ;</B>
+          call an internal routine, an external routine or program,
+          or a built-in function. Depending on the type of
+          routine called, the variable <B>RESULT</B> contains the result
+          of the routine. <B>RESULT</B> is uninitialized if no result is
+          returned.
+          ie.       <B>call substr 'makedonia',2,3</B>
+                  /* now. variable result = 'ake' */
+                  /* the same can be obtained with */
+                    <B>result = substr('makedonia',2,3)</B>
+
+          In the following sections there is a description of
+          all the built-in rexx functions.
+
+          Internal functions are sequence of instructions inside the
+          same program starting at the label that matches the name in
+          the <B>CALL</B> instruction.
+
+          External routines are like internal but written in
+          a separate module that can be used as a library. In this
+          REXX external routines must be loaded with the built-in
+          function <B>LOAD</B> before the are used (see below).
+
+          As external routines can be used any DOS command or program
+          that uses standard input and output. (<B>LOAD</B> affects only REXX
+          routines)
+                  /* external programs can be called as routines */
+                  /* and the output of the program (to stdout) will */
+                  /* be returned as the result string of the function */
+                    <B>call "dir" "*.exe","/w"</B>    /* or */
+                    <B>files = "dir"('*.exe',"/w")</B>
+                    <B>current_directory = 'cd'()</B>
+
+      <B>DO      [ [name=expri  [TO exprt] [BY exprb]</B>
+                <B>[FOR exprf]] | [ FOREVER | exprr ]</B>
+              <B>[UNTIL expru | WHILE exprw] ;</B>
+              <B>[instr]... ;</B>
+      <B>END [symbol] ;</B>
+          <B>DO</B> is used to group many instructions together and
+          optionally executes them repetively.
+       o  Simple <B>DO</B> loop are used to execute a block of instructions
+          often used with <B>IF-THEN</B> statements.
+          Note. Simple <B>DO</B> loops are not affected with
+          <B>ITERATE</B> or <B>LEAVE</B> instructions (see below)
+          ie. <B>If name = 'VIVI' then Do</B>
+                                    <B>i = i + 1</B>
+                                    <B>Say 'Hello Vivi'</B>
+                                    <B>End</B>
+
+       o  Simple repetitive loops.
+          ie.   <B>do 3</B>               /* would display 3 'hello' */
+                   <B>say 'hello'</B>
+                <B>end</B>
+          Note. <B>DO expr, expr</B> must evaluate to an integer number.
+
+                <B>do forever</B>             /* infinite loop, display always */
+                   <B>say 'lupe forever'</B>  /* 'hello' */
+                <B>end</B>
+
+       o  Loops with control variable. name is stepped from <B>expri</B>
+          to <B>exprt</B> in steps of <B>exprb</B>, for a maximum of <B>exprf</B> iterations.
+                <B>do i = 1 to 10 by 3</B>    /* would display the numbers */
+                   <B>say i</B>               /* 1, 4, 7, 10 */
+                <B>end</B>
+          Note. all the expressions are evaluated before the loop is
+          executed and may result to any kind of number, integer or real.
+
+       o  Conditional loops
+            ie.   <B>a = 2</B>                /* would display */
+                  <B>do while a < 5</B>       /*  2  */
+                     <B>say a</B>             /*  4  */
+                     <B>a = a + 2</B>
+                  <B>end</B>
+            Note. <B>exprw</B> and <B>expru</B> are evaluated in each iteration and
+            must result to 0 or 1. <B>WHILE</B> expression is evaluated before
+            each iteration, where <B>UNTIL</B> expression is evaluated at the
+            end of each iteration.
+
+          You can combine them like:
+                  <B>a = 1</B>                  /* would display */
+                  <B>do for 3 while a < 5</B>   /*  1  */
+                     <B>say a</B>               /*  2  */
+                     <B>a = a + 1</B>           /*  3  */
+                  <B>end</B>
+
+       <B>DROP name [name]... ;</B>
+          drop (reset) the named variables or group of variables
+          by freeing their memory. It returns them in their original
+          uninitialized state.
+          If an exposed variable is named, the variable itself
+          in the older generation will be dropped!
+          If a stem is specified all variables starting with that stem
+          will be dropped.
+          ie.        <B>j = 2</B>
+                     <B>drop a x.1 y.j</B>   /* resets variables A X.1 and Y.2 */
+                     <B>drop z.</B>          /* resets all variables with names
+                                         starting with Z. */
+
+      <B>EXIT [expr] ;</B>
+          leave the program (with return data, expr). <B>EXIT</B> is
+          the same as <B>RETURN</B> except that all internal routines
+          are terminated.
+          ie.       <B>exit  12*3</B>       /* will exit the program with rc=36 */
+
+      <B>IF expr [;] THEN [;] instr ;</B>
+                 <B>[ELSE [;] instr];</B>
+          if <B>expr</B> evaluates to <B>"1"</B>, execute the instruction
+          following the <B>THEN</B>. Otherwise, when expr evaluates to <B>"0"</B>,
+          the instruction after <B>ELSE</B> is executed, if <B>ELSE</B> is present.
+          ie.  <B>if name="bill" then say "Hello billy."</B>
+                              <B>else say "Hello stranger"</B>
+
+
+      <B>INTERPRET  expr ;</B>
+          <B>expr</B> is evaluated and then is processed, as it was a
+          part of the program.
+          ie.  <B>cmd = "say 'Hello'"</B>
+               <B>interpret cmd </B>    /* displayes "Hello" */
+
+      <B>ITERATE   [name] ;</B>
+          start next iteration of the innermost repetitive loop
+          (or loop with control variable name).
+          ie.  <B>do i = 1 to 5</B>           /* would display:  1  */
+                  <B>if i=3 then iterate</B>  /*                 2  */
+                  <B>say i</B>                /*                 4  */
+               <B>end</B>                     /*                 5  */
+
+      <B>LEAVE     [name] ;</B>
+          terminate innermost repetitive loop (or loop with control
+          variable name).
+          ie.  <B>do i = 1 to 5</B>           /* would display:  1  */
+                  <B>if i=3 then leave</B>    /*                 2  */
+                  <B>say i</B>
+               <B>end</B>
+
+      <B>LOWER name [name]...</B>
+          translate the values of the specified individual
+          variables to lowercase.
+          ie.   <B>name = 'ViVi'</B>
+                <B>lower name</B>           /* now, name = 'vivi' */
+
+      <B>NOP ;</B>
+          dummy instruction, has no effect.
+          ie.   <B>if name='vivi' then nop; else say 'Hello vivi.'</B>
+
+      <B>NUMERIC  DIGITS [expr]  |</B>
+               <B>FORM   [SCIENTIFIC | ENGINEERING] |</B>
+               <B>FUZZ   [expr]  ;</B>
+-         dummy instruction, has no effect, just for compatibility
+-         with VM/CMS REXX.
+
+      <B>PARSE   [UPPER]  + ARG               | [template] ;</B>
+                       <B>| AUTHOR            |</B>
+                       <B>| EXTERNAL          |</B>
+                       <B>| NUMERIC           |</B>
+                       <B>| PULL              |</B>
+                       <B>| SOURCE            |</B>
+                       <B>| VALUE [expr] WITH |</B>
+                       <B>| VAR name          |</B>
+                       <B>+ VERSION           +</B>
+          Parse is used to assign data from various sources to
+          one or more variables according to the template
+          (see below for template patterns)
+          o  <B>ARG</B>, parses the argument string(s) passed to the program,
+             subroutine, or function. <B>UPPER</B> first translates the
+             strings to uppercase. See also the <B>ARG</B> instruction.
++         o  <B>AUTHOR</B> parse the author string.
+          o  <B>EXTERNAL</B>, prompts for input and parses the input string
+          o  <B>NUMERIC</B>, parse the current <B>NUMERIC</B> settings.
+          o  <B>PULL</B>, read and parse the next string from rexx stack
+             if not empty otherwise prompts from input
+             See the <B>PULL</B> instruction.
+          o  <B>SOURCE</B>, parse the program source description e.g.
+             "CMS COMMAND FRED EXEC A fred CMS".
+          o  <B>VALUE</B>, parse the value of <B>expr</B>.
+          o  <B>VAR</B>, parse the value of <B>name</B>.
+          o  <B>VERSION</B>, parse the version string of the interpreter.
+
+      <B>PROCEDURE [EXPOSE name [name]...] ;</B>
+          start a new generation of variables within an internal
+          routine. Optionally named variables or groups of
+          variables from an earlier generation may be exposed.
+          If a stem is specified (variable ending in '.' dot, ie 'A.')
+          then every variable starting with this stem will be exposed
+               <B>i = 1; j = 2</B>
+               <B>call myproc</B>
+               <B>exit</B>
+               <B>myproc: procedure expose i</B>     /* would display */
+               <B>say i j</B>                        /* 1 J */
+               <B>return</B>
+
+      <B>PULL   [template] ;</B>
+          pops the next string from rexx internal stack. If stack
+          is empty then it prompts for input. Translates it
+          to uppercase and then parses it according to template.
+          Short for <B>PARSE UPPER PULL</B>.
+               <B>push 'Bill Vlachoudis'</B>
+             /* --- many instrs ---- */
+               <B>pull name surname</B>          /* now: name='BILL',         */
+                                          /*      surname='VLACHOUDIS' */
+
+      <B>PUSH   [expr] ;</B>
+          push <B>expr</B> onto head of the rexx queue (stack LIFO)
+
+      <B>QUEUE  [expr] ;</B>
+          add <B>expr</B> to the tail of the rexx queue (stack FIFO)
+
+      <B>RETURN [expr] ;</B>
+          return control from a procedure to the point of its invocation.
+          if <B>expr</B> exits, then it is returned as the result of the
+          procedure.
+                <B>num = 6</B>
+                <B>say num || '! = ' fact(num)</B>
+                <B>exit</B>
+                <B>fact: procedure</B>               /* calculate factorial with */
+                <B>if arg(1) = 0 then return 1</B>   /* recursion */
+                <B>return fact(arg(1)-1) * arg(1)</B> /* displayes: 6! = 720 */
+
+      <B>SAY [expr];</B>
+          evaluate <B>expr</B> and then writes the result to standard output
+          (normally user's console) followed by a newline.
+
+      <B>SELECT ;</B>
+         <B>WHEN expr [;] THEN [;] instr;</B>
+       <B>[ WHEN expr [;] THEN [;] instr; ]</B>
+       <B>[ OTHERWISE [;] [instr]... ];</B>
+      <B>END ;</B>
+          <B>SELECT</B> is used to conditionally process one of several alternatives.
+          Each <B>WHEN</B> expression is evaluated in sequence until
+          one results in "1". instr, immediately following it, is
+          executed and control leaves the block. If no
+          expr evaluated to "1", control passes to the
+          instructions following the <B>OTHERWISE</B> expression
+          that must then be present.
+               <B>num = 10</B>
+               <B>select</B>
+                  <B>when num > 0 then say num 'is positive'</B>
+                  <B>when num < 0 then say num 'is negative'</B>
+                  <B>otherwise  say num 'is zero'</B>
+               <B>end</B>
+
+      <B>SIGNAL [name] |</B>
+             <B>[VALUE] expr |</B>
+             <B><ON | OFF> + ERROR   +      ;</B>
+                        <B>| HALT    |</B>
+                        <B>| NOVALUE |</B>
+                        <B>+ SYNTAX  +</B>
+       o  <B>NAME</B>, jump to the label <B>name</B> specified. Any pending
+          instructions, <B>DO ... END, IF, SELECT</B>, and <B>INTERPRET</B>
+          are terminated.
+       o  <B>VALUE</B>, may be used for an evaluated label name.
+       o  <B>ON|OFF</B>, enable or disable exception traps. Condition
+          must be <B>ERROR</B>, <B>HALT</B>, <B>NOVALUE</B>, or <B>SYNTAX</B>. Control
+          passes to the label of the condition name if the event
+          occurs while <B>ON</B>
+               <B>signal vivi</B>
+                 <B>...</B>
+               <B>vivi:</B>
+                   <B>say 'Hi!'</B>
+
+      <B>TRACE option;</B>
+          Trace according to following option. Only first letter of
+          option is significant.
+          <B>A (All)</B> trace all clauses.
+          <B>C (Commands)</B> trace all commands.
+          <B>E (Error)</B> trace commands with non-zero return codes
+            after execution.
+          <B>I (Intermediates)</B> trace intermediate evaluation
+            results and name substitutions also.
+          <B>L (Labels)</B> trace only labels.
+          <B>N (Negative or Normal)</B> trace commands with negative
+            return codes after execution (default setting).
+          <B>O (Off)</B> no trace.
+          <B>R (Results)</B> trace all clauses and expressions.
+          <B>S (Scan)</B> display rest of program without any
+            execution (shows control nesting).
+-         <B>!</B> turn command inhibition on or off, and trace
+-           according to next character.
+          <B>?</B> turn interactive debug (pause after trace) on or
+            off, and trace according to next character.
+          null  restores the default tracing actions.
+          <B>TRACE VALUE</B> expr may be used for an evaluated
+          trace setting.
+
+      <B>UPPER name [name]...</B>
+          translate the values of the specified individual
+          variables to uppercase.
+             <B>name = 'Vivi'</B>
+             <B>upper name</B>         /* now: name = 'VIVI' */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="expr.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="template.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,208 @@
+                                                               o o
+                                                             ____oo_
+                                                            /||    |\
+                                                             ||    |
+                                                             `.___.'
+                                                             MARMITA
+
+
+
+
+
+
+
+
+
+
+               **********
+                ***    ***
+                 **     ***
+                **      ***
+                **      **      ****    ***    ***   ***    ***
+                **     **      **  **     **  ** *     **  ** *
+               *********      **   **     ** **        ** **
+               **  ***       **   **       ***          ***
+               **   **      *******        **           **
+              **     **     **            ****         ****
+              **      **    **           ** **  *     ** **  *
+             ***      ***   **   **   * **   ***   * **   ***
+            ****     ******  *****    ***     **   ***     **
+
+
+                 Restructured    EXtended      eXecutor
+
+
+                     P A R A D O X   R O U T I N E S
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            Bill N. Vlachoudis
+                        bnv@nisyros.physics.auth.gr
+                            V.Vlachoudis@cern.ch
+                      http://nisyros.physics.auth.gr:10000
+
+     Writing documents is not my favorite, so the following is only a short
+  description of what paradox routines do. You will need to read first a
+  manual for paradox engine to understand how this libraries works.
+
+
+  PXINIT( )
+      Initialize paradox engine. It needs about 40k of RAM.
+
+  PXOPEN( tablename )
+      Opens a database table "tablename" and returns
+      a number for that tablehandle.
+      -1 if file is not found!
+
+  PXCLOSE( table )
+      closes an opened table. "table" is the tablehandle, can be
+      an integer or the name of the database..
+
+  PXEMPTY( tablename )
+      erases all records of a table. "tablename" is the name of the
+      database table, no need to be opened with PXTBLOPEN
+
+  PXUPGRADE( table )
+      upgrades a database table, to become a pxengine v3.1 table.
+
+  PXDELETE( tablename )
+      deletes table and all the related files with it.
+
+  PXEXIST( tablename )
+      returns 0 or 1 if table "tablename" exist.
+
+  PXNAME( table )
+      returns the name corresponding to a table handle "table"
+
+  PXRECORDS( table )
+      returns the numbers of records in "table"
+
+  PXFIELDS( table )
+      returns the number of fields in "table"
+
+  PXKEYS( table )
+      returns the number of keys in "table"
+
+  PXRECOPEN( tablename )
+      opens a new record handle for this table. Before doing anything
+      on the records of the database this routine must be called
+
+  PXRECDELETE( tablename )
+      deletes current record from table
+
+  PXPROTECTED( tablename )
+      returns TRUE or FALSE if the table is password protected
+
+  PXPSWADD( password )
+      add a "password" to pxengine
+
+  PXPSWDEL( password )
+      deletes the previous added "password" to pxengine
+
+  PXDECRYPT( tablename )
+      decrypts the table "tablename"
+
+  PXCREATE( tablename, nfields, fields, types )
+       Creates an empty table.
+       'fields' and 'types' must be strings with the name of rexx
+       arrays containing the fields and types
+       ie.     field.1 = "Code"      ; type.1 = "N"
+               field.2 = "Name"      ; type.2 = "A20"
+               field.3 = "Birthdate" ; type.3 = "D"
+               call pxcreate "test",3,"field.","test."
+
+
+  PXCOPY( tablename1, tablename2 )
+       copies all the records from table "tablename2 to "tablename1"
+
+  PXRENAME( tablename1, tablename2 )
+       renames the table "tablename2" to "tablename1" and all the
+       related files.
+
+  PXADD( tablename1, tablename2 )
+       adds to table "tablename1" all records from "tablename2"
+
+  PXFLDHANDLE( tablename, fieldname )
+       returns the field handle associate with the fieldname
+
+  PXENCRYPT( tablename, password )
+       encrypts the table "tablename" with password "password"
+
+  PXRECPUT( table, record )
+      writes the record to table
+
+  PXRECAPPEND( table, record )
+      appends current record to table
+
+  PXRECINSERT, PXRECUPDATE
+      reads one record from table
+
+  PXFLDTYPE( table, fieldhandle )
+      returns the field type of fieldhandle
+
+  PXFLDNAME( table, fieldhandle )
+      returns the field name of 'fieldhandle'
+
+  PXBLOBDROP( table, fieldhandle )
+      delete blob
+
+  PXKEYDROP( tablename, fieldhandle )
+
+
+  PXRECCLOSE( record )
+
+  PXRECEMPTY( record )
+
+  PXERRORMSG( num )
+      returns the error message 'num'
+
+  PXRECCOPY( record1, record2 )
+
+  PXFLDPUT( record, field, type, value )
+      Put a field into a record.
+      Type can be  'Alpha'  for string
+                   'Blob'   for blob  fields
+                   'Date'   for date
+                   'Short'  for short integer
+                   'Long'   for long  integer
+                   'Time'   for Time
+                   'Number' for real numbers
+                   nothing  if you want to skip that field
+  PXFLDGET( record, field, type )
+      Returns a field from a record.
+      Type can be  'Alpha'  for string
+                   'Blob'   for blob  fields
+                   'Date'   for date
+                   'Short'  for short integer
+                   'Time'   for time
+                   'Long'   for long  integer
+                   'Number' for real numbers
+
+  PXSEEK( table (,"FIRST","PREV","CUR","NEXT","LAST" (,offset)))
+       move table cursor to spesified record
+       returns the current record number
+
+   PXSRCHFLD( table, record, Nfields(, mode))
+
+   PXSRCHKEY( table, record, fieldhandle, mode )
+       where mode can be  "FIRST", "NEXT", "CLOSEST"
+       default value for mode is "FIRST"
+
+   PXKEYADD( tablename, fieldhandles(, mode )
+       add a primary or secondary (maintained/nonmaintained) index
+       'fieldhandles' is a string with words the field numbers
+       mode can be 'Primary', 'Secondary', 'Incsecondary'
+       default is 'Primary'

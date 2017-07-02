@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Implementation Restrictions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="restrict.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Implementation Restrictions
+</H1>
+
+      The name of a variable or label, and the length of a literal
+      string may not exceed 250 bytes. More characters than 250
+      will be truncated.
+
+-     The internal represantation of a clause (after removal of
+-     comments, extra blanks etc.) may not exceed 500 bytes.
+
+|     Numbers follows C restrictions, thus integers are long and
+|     real numbers are held as double.
+
+|     The <B>FOR</B> and simple counts on a <B>DO</B> instruction, and the
+|     right-hand term of an exponentiation may not exceed maximum
+|     long number.
+
+      The control stack (for <B>DO</B>, <B>IF</B>, <B>CALL</B>, etc.) is limited to
+      internal stack of the computer. For MsDos rexx the maximum
+      recursive level will be round 70-80.
+
+      Functions and subroutines cannot be called with more than
+      10 arguments.
+
+|     Input & Output cannot be redirected for commands executed
+|     through INT2E.
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="restrict.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+</TABLE>
+</BODY>
+</HTML>

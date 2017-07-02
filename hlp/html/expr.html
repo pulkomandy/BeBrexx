@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Expressions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="tokens.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="instr.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Expressions
+</H1>
+                                                         
+      Most REXX instructions permit the use of expressions,
+      following normal algebraic style. Expressions can consists
+      of strings, symbols, or functions calls. Expressions are
+      evaluated from left to right, modified by parentheses and
+      the priority of the operators (as ordered below). Parentheses
+      may be used to change the order of evaluation.
+
+      All operations (except prefix operations) act on two items
+      and result in a character string.
+
+      Prefix  <B>+ - ^</B>
+            Prefix operations: Plus; Minus; and Not. (For + and -,
+            the item must evaluate to a number; for ^, the item
+            must evaluate to "1" or "0".)
+            ie.    <B>-4 </B>        /* -4 */
+
+      <B>**</B>
+            Exponentiate. (Both items must evaluate to numbers,
+            and the right-hand item must be a whole number.)
+            ie.    <B>2 ** 3 </B>      /* 8 */
+                   <B>2 ** -3 </B>     /* 0.125 */
+
+      <B>* / % //</B>
+            Multiply; Divide; Integer Divide; Divide and return the
+            remainder. (Both items must evaluate to numbers.)
+            ie.    <B>4 *  3</B>       /* 12 */
+                   <B>4 /  3</B>       /* 1.333.. */
+                   <B>5 %  3</B>       /* 1 */
+                   <B>5 // 3</B>       /* 2 */
+
+      <B>+ -</B>
+            Add; Subtract. (Both items must evaluate to numbers.)
+            ie.    <B>2 + 3.02</B>     /* 5.02 */
+
+      <B>(blank) ||</B>
+            Concatenate: with or without a blank. Abuttal of items
+            causes direct concatenation.
+            ie.    <B>a = 'One'</B>
+                   <B>a  'two'</B>       /* "One two" */
+                   <B>a || 'two'</B>     /* "Onetwo"  */
+
+
+      <B>= == ^= ^== /= /== >
+      < ^> ^< >= <= <> ><</B>
+            Comparisons (arithmetic compare if both items evaluate
+            to a number.) The == operator checks for an exact
+            match.
+            ie.      <B>'marmita' =  ' marmita '</B>   /* 1 */
+                     <B>'marmita' == ' marmita '</B>   /* 0 */
+                     <B>'marmita' ^= ' marmita '</B>   /* 0 */
+                     <B>'marmita' ^==' marmita '</B>   /* 1 */
+
+      <B>&</B>
+            Logical And. (Both items must evaluate to "0" or "1".)
+            ie.    <B>'A'='B' & 'C'='C'</B>  /* 0 */
+
+      <B>| &&</B>
+            Logical Or; Logical Exclusive Or. (Both items must
+            evaluate to "0" or "1".)
+            ie.    <B>'A'='B' |  'C'='C'</B>  /* 1 */
+                   <B>'A'='B' && 'C'='C'</B>  /* 1 */
+
+      In CMS/REXX the results of arithmetic operations are
+      rounded according the setting to <B>NUMERIC DIGITS</B> (default is 9).
+      Here all arithmetic operations follow C arithmetics. For a
+      more detail description look at the INTERNAL.DOC
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="tokens.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="instr.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

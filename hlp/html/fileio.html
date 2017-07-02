@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, File Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="convert.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="restrict.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      File Functions
+</H1>
+
++    <B>General</B>
++         Files can be referenced as a string containing the name
++         of the file ie "TEST.R" or the file handle that is
++         returned from OPEN function. (Normally the second way
++         if prefered when you want to open 2 or more files with
++         the same name).
++         There are always 5 special files:
++           Handle - filename    Description
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++             <B>0      &lt;STDIN&gt;</B>     Standard input
++             <B>1      &lt;STDOUT&gt;</B>    Standard output
++             <B>2      &lt;STDERR&gt;</B>    Standard error
++             <B>3      &lt;STDAUX&gt;</B>    Standard auxiliary file, ie COM1:
++             <B>4      &lt;STDPRN&gt;</B>    Standard printer file, ie LPT1:
++         All open files are closed at the end of the program
++         from REXX interpreter except in the case of error
+
++     <B>CLOSE( file )</B>
++         closes an opened <B>file</B>.
++         file may be string or the handle number
+             <B>call close 'BINGO'</B>  /* these two cmds are exactly the same */
+             <B>call close hnd</B>      /* where  hnd=open('BINGO','w') */
+
++     <B>EOF( file )</B>
++         returns 1 at eof, -1 when <B>file</B> is not opened
++         and 0 otherwise
+             <B>if eof(hnd) then signal finito</B>
+
++     <B>FLUSH( file )</B>
++         flush a stream to disk
+             <B>call flush 'BINGO'</B>
+
++     <B>OPEN( file, mode )</B>
++         opens a <B>file</B>. (<B>mode</B> follows C prototypes:
++           <B>"r"</B> - for read, <B>"w"</B> - for write, <B>"t"</B> - for text,
++           <B>"a"</B> - for append, <B>"b"</B> - for binary, <B>"+"</B> - to
++           open file for read/write )
++         and returns the handle number for that file
++         -1 if file is not found!
+             <B>hnd = open('BINGO','w')</B>
+             <B>if hnd = -1 then do</B>
+                <B>say 'error opening file BINGO.'</B>
+                <B>...</B>
+             <B>end</B>
+
++     <B>READ( (file)(,length) )</B>
++         returns reads <B>length</B> bytes from <B>file</B>.
++       o if <B>length</B> is not specified then return one line from <B>file</B>
++       o if <B>file</B> is not opened, it will be opened automatically
++         in <B>"r"</B> mode
++       o if <B>file</B> is ommited, it is assumed to be <B>&lt;STDIN&gt;</B>
+              <B>kbdin = read()</B>              /* reads one line from stdin */
+              <B>keypressed = read(,1)</B>       /*  -//-     char   -//-     */
+              <B>linein = read('BINGO')</B>      /* reads one line from file */
+              <B>linein = read(hnd)</B>          /*         -//-             */
+              <B>ch = read('data',1)</B>         /* if file 'data' is not opened
+                                          then it will be opened in "r" mode
+                                          and ch will contain one character.*/
+
++     <B>SEEK( file (,offset (,"TOF","CUR","EOF")))</B>
++         move <B>file</B> pointer to <B>offset</B>  relative from <B>TOF</B>  (default)
++         and return new <B>file</B> pointer
++       * this is an easy way to determine the filesize,
++         by seeking at the end, <B>filesize = seek(file,0,"EOF")</B>
+              <B>call  seek 'data',0,"TOF"</B>   /* sets the pointer to the start
+                                             of the file */
+              <B>filepos = seek('data',-5,"CUR")</B> /* moves pointer 5 bytes
+                                     backwards, and returns current pos */
+
++     <B>WRITE( (file)(, string(,)))</B>
++         writes the <B>string</B> to <B>file</B>.
++         returns the number of bytes written
++       * if a comma is specified as a third argument then
++         newline is added at the end of the string
++         WARNING: comma at the end of a line causes line continuation!
+             This can be avoided either with a semicolon directly after the
+             comma, or with any variable as a third argument that it
+             will be ommited. ie.
+                <B>call write 'data','First line',;</B>    /* note the semicolon */
+                or
+                <B>call write 'data','Second line',nl</B>
++       * if neither <B>string</B> is specified then results to one
++         newline in the <B>file</B>
++       * if <B>file</B> is not opened, it will be opened automatically
++         in <B>"w"</B> mode
++       * if <B>file</B> is ommited, it is assumed to be <B>&lt;STDOUT&gt;</B>
+              <B>call write ,'a'</B>              /* writes 'a' to stdout */
+              <B>call write '','one line',nl</B>  /* write 'one line' to stdout */
+              <B>call write 'data','bingo'</B>    /* writes 'bingo' to 'data' file*/
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="convert.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="restrict.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

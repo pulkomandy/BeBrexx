@@ -1,0 +1,130 @@
+
+                                                                        o o
+                                                                      ____oo_
+                                 R  E  X  X                  1992    /||    |\
+                                  Ver. 1.3                    BNV     ||    |
+                                 for  MSDOS                 MARMITA   `.___.'
+                                  and Unix
+
+
+ €€€€€€€≤≤≤≤≤≤≤±±±±±±±∞∞∞∞∞∞∞   F R E E W A R E   ∞∞∞∞∞∞∞±±±±±±±≤≤≤≤≤≤≤€€€€€€€
+
+
+                 Author.........Bill N. Vlachoudis
+                 Address........Eirinis 6
+                                TK555 35 Pilea
+                                Thessaloniki Greece
+                 Computer addr..bnv@nisyros.physics.auth.gr
+                                V.Vlachoudis@cern.ch
+                                bill@evros.med.auth.gr
+                 Http addr......http://nisyros.physics.auth.gr:10000
+                 Telephone......+33-4-50-99-1832
+                 Date...........Sep-1997
+
+
+[This file is not current, and it lies in many cases. Willy.]
+
+This archive.contains the following files:
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+BIN            <DIR>		Directory with executable progs for various
+				operating systems
+HLP            <DIR>		Documentation
+LIB            <DIR>		Several library.rexx programs
+PROGS          <DIR>		Demo programs
+SRC            <DIR>		Source Code of Rexx interpreter
+filelist.txt	4,583		This file!
+         1 file(s)              0 bytes
+
+
+Directory BIN
+ ~~~~~~~~~~~~~
+DOS/rx.exe	125,693		Dos executable with Paradox engine
+CONVEX/rx			HP-Convex executable
+HP715/rx	159,744		HP-UX V9
+LINUX/rx	 71,785		Linux
+RS_AIX32/rx	209,544		IBM RS Aix32
+
+Directory HLP
+ ~~~~~~~~~~~~
+about.txt	 15,440		About this interpreter
+internal.txt	  5,449		Internal stuff
+rx.txt		 63,566		Rexx manual + installation
+rxpx.txt	  6,320		Paradox engine.reference
+
+Directory LIB
+ ~~~~~~~~~~~~~
+conio.r		3,043		Console input/output
+dates.r		2,730		Date functions
+files.r		1,397		File functions
+px.r		2,108		Paradox functions
+
+Directory PROGS
+ ~~~~~~~~~~~~~~~
+cp.bat		36		CP a dummy prog used by monday
+				(Just to fool CP commands of VM/CMS)
+vmfclear.bat	14		Clear screen in VM/CMS
+date.db		4,082		PX engine data base
+3dplot.r	518		3D plot with SAY
+animal.r	1,343		Animals game
+awari.r		8,762		Awari, african game
+banner.r	12,372		Banner program
+calc.r		1,001		Small calculator with interrupt cmd
+circle.r	704		Draw program in MCGA mode
+code.r		527		Encrypt/Decrypt using random rumbers
+cp.r		217
+exts.r		1,096		Display summary of extension in current dir
+fact.r		876		Example of int/reals
+intr.r		212		Examble of interrupt calling
+light.r		2,642		Caleidoscope
+lines.r		344		Display lines of files like unix wc
+monday.r	28,393		Monday adventure game
+pxview.r	2,643		Paradox View
+set_demo.r	2,616		Dos SET example
+soundex.r	856		Soundex search
+stars.r		359		Conio example
+tb.r		2,846		Time banner
+uniq.r		221		Unix uniq cmd
+vartree.r	179		Variables Tree example
+
+Directory SRC
+ ~~~~~~~~~~~~~
+makefile	509		Makefile
+bc.mak		1,976		Makefile for Borland C
+unix.mak	510		Unix makefile
+rexx.prj	10,625		Project for Borland C
+int2e.a		2,516		Interrupt 2E handler (Backdoor of COMMAND.COM)
+builtin.c	24,566		Builting functions
+convert.c	6,991		Lstring conversion functions
+error.c		4,369		Display Errors
+expr.c		18,052		Expression handling
+instruct.c	42,574		Instructions
+i_cmd.c		5,468		Host command (stack etc....)
+i_do.c		11,298		DO command
+lstring.c	5,978		Length prefixed strings routines
+memory.c	4,682		Memory handling
+nextsymb.c	18,218		Next symbol
+pxdb.c		25,765		Paradox engine interface needs PXENGINE.LIB
+rexx.c		9,571		Main program
+rexxfunc.c	18,705		Rexx functions call
+rxconv.c	10,524		Rexx conversion functions
+rxfiles.c	8,355		Rexx file I/O
+rxmath.c	2,738		Rexx math functions
+rxstr.c		27,138		Rexx string handling
+rxword.c	5,784		Rexx words handling
+template.c	8,206		Template parsing of PARSE cmd
+utils.c		10,326		Various Utilities
+variable.c	15,564		Variables functions
+common.h	1,109		Common header and definitions
+convert.h	654		Lstring convert header
+error.h		3,952		Error header
+expr.h		904		Expression header
+instruct.h	1,357		Instructions header
+int2e.h		360		Interrupt INT2E header
+lstring.h	1,685		Length prefixed strings header
+memory.h	935		Memory handling header
+nextsymb.h	276		Next symbol header
+rexx.h		11,737		Rexx main header
+rxdefs.h	3,759		Rexx definitions header
+utils.h		831		Utilities header
+variable.h	1,022		Variables header

@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, String Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="functions.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="word.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      String Functions
+</H1>
+
+      <B>ABBREV(information,info[,length])</B>
+           tests whether <B>info</B> is an abbreviation of <B>information</B>.
+           returns "1" on true, else returns "0". If <B>length</B> is specified
+           then searching takes place only for the first <B>length</B> characters.
+               <B>abbrev("billy","bill")</B>       /* 1 */
+               <B>abbrev("billy","bila")</B>       /* 0 */
+               <B>abbrev("billy","bila",3)</B>     /* 1 */
+
+
+      <B>CENTRE(string,length[,pad])</B>
+      <B>CENTER(string,length[,pad])</B>
+           returns <B>string</B> centered in a <B>pad</B>ded string of length <B>length</B>.
+               <B>center("rexx",2)</B>            /* 'ex' */
+               <B>center("rexx",8)</B>            /* '  rexx  ' */
+               <B>center("rexx",8,'-')</B>        /* '--rexx--' */
+
+      <B>COMPARE(string1,string2[,pad])</B>
+           returns "0" if <B>string1==string2</B>, else it returns the
+           index of the first nonmatching character. Shorter
+           string is padded with <B>pad</B> if necessary
+               <B>compare('bill','bill')</B>      /* 0 */
+               <B>compare('bill','big')</B>       /* 3 */
+               <B>compare('bi  ','bi')</B>        /* 0 */
+               <B>compare('bi--*','bi','-')</B>   /* 5 */
+
+      <B>COPIES(string,n)</B>
+           returns <B>n</B> concatenated copies of <B>string</B>.
+               <B>copies('bill',3)</B>  /* 'billbillbill' */
+
+      <B>DELSTR(string,n[,length])</B>
+           delete substring of <B>string</B> starting at the <B>n</B>th
+           character and of length <B>length</B>.
+               <B>delstr('bill',3)</B>           /* 'bi' */
+               <B>delstr('bill',2,2)</B>         /* 'bl' */
+
+      <B>INDEX(haystack,needle[,start])</B>
+           return the position of <B>needle</B> in <B>haystack</B>,
+           beginning at <B>start</B>.
+               <B>index('bilil','il')</B>         /* 2 */
+               <B>index('bilil','il',3)</B>       /* 4 */
+
+      <B>INSERT(new,target[,[n][,[length][,pad]]])</B>
+           insert the string <B>new</B> of length <B>length</B> into the string
+           <B>target</B>, after the <B>n</B>th character (n can be 0)
+               <B>insert('.','BNV',2)</B>         /* 'BN.V' */
+               <B>insert('.','BNV',2,2)</B>       /* 'BN. V' */
+               <B>insert('','BNV',2,2,'.')</B>    /* 'BN..V' */
+
+      <B>LASTPOS(needle,haystack[,start])</B>
+           return the position of the last occurrence of <B>needle</B> in
+           <B>haystack</B>, beginning at <B>start</B>.
+               <B>lastpos('il','bilil')</B>       /* 4 */
+               <B>lastpos('il','bilil',4)</B>     /* 2 */
+
+      <B>LEFT(string,length[,pad])</B>
+           return a string of length <B>length</B> with <B>string</B> left
+           justified in it.
+               <B>left('Hello',2)</B>        /* 'He' */
+               <B>left('Hello,10)</B>        /* 'Hello     ' */
+
+      <B>LENGTH(string)</B>
+           return the length of <B>string</B>
+               <B>length('Hello')</B>        /* 5 */
+
+      <B>OVERLAY(new,target[,[n][,[length][,pad]]])</B>
+           overlay the string <B>new</B> of length <B>length</B> onto string
+           <B>target</B>, beginning at the <B>n</B>th character.
+               <B>overlay('.','abcd',2)</B>         /* 'a.cd' */
+               <B>overlay('.','abcd')</B>           /* '.bcd' */
+               <B>overlay('.','abcd',5,3,'+')</B>   /* 'abcd+.+' */
+
+      <B>POS(needle,haystack[,start])</B>
+           return the position of <B>needle</B> in <B>haystack</B>,
+           beginning at <B>start</B>.
+               <B>pos('ll','Bill')</B>         /* 3 */
+
+      <B>REVERSE(string)</B>
+           swap <B>string</B>, end-to-end.
+               <B>reverse('Bill')</B>         /* 'lliB' */
+
+      <B>RIGHT(string,length[,pad])</B>
+           returns <B>length</B> righmost characters of <B>string</B>.
+               <B>right('abcde',2)</B>       /* 'de' */
+
+      <B>SUBSTR(string,n[,[length][,pad]])</B>
+           return the substring of <B>string</B> that begins at the <B>n</B>th
+           character and is of length <B>length</B>. Default <B>pad</B> is space.
+               <B>substr('abcde',2,2)</B>      /* 'bc' */
+               <B>substr('abcde',2)</B>        /* 'bcde' */
+               <B>substr('abcde',4,3,'-')</B>  /* 'de-' */
+
+      <B>STRIP(string[,[<"L"|"T"|"B">][,char]])</B>
+           returns <B>string</B> stripped of <B>Leading</B>, <B>Trailing</B>, or <B>Both</B>
+           sets of blanks or other <B>char</B>s. Default is <B>"B"</B>.
+               <B>strip(' abc  ')</B>          /* 'abc' */
+               <B>strip(' abc  ','t')</B>      /* ' abc' */
+               <B>strip('-abc--',,'-')</B>     /* 'abc' */
+
+      <B>TRANSLATE(string[,[tableo][,[tablei][,pad]]])</B>
+           translate characters in <B>tablei</B> to associated characters
+           in <B>tableo</B>. If neither table is specified, convert to
+           uppercase.
+               <B>translate('abc')</B>             /* 'ABC' */
+               <B>translate('aabc','-','a')</B>    /* '--bc' */
+               <B>translate('aabc','-+','ab')</B>  /* '--+c' */
+
+      <B>VERIFY(string,reference[,[option][,start]])</B>
+           return the index of the first character in <B>string</B> that
+           is not also in <B>reference</B>. if <B>"Match"</B> is given, then
+           return the result index of the first character in
+           <B>string</B> that is in reference.
+               <B>verify('abc','abcdef')</B>       /* 0 */
+               <B>verify('a0c','abcdef')</B>       /* 2 */
+               <B>verify('12a','abcdef','m')</B>   /* 3 */
+
+      <B>XRANGE([start][,end])</B>
+           return all characters in the range <B>start</B> through <B>end</B>.
+               <B>xrange('a','e')</B>       /* 'abcde' */
+               <B>xrange('fe'x,'02'x)</B>   /* 'feff000102'x */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="functions.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="word.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

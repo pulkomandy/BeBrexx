@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Math Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="word.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="convert.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Math Functions
+</H1>
+
+      <B>ABS(number)</B>
+           return absolute value of <B>number</B>
+               <B>abs(-2.3)</B>            /* 2.3 */
+
+      <B>FORMAT(number[,[before][,[after][,[expp][,expt]]]])</B>
+          rounds and formats number with <B>before</B> integer digits
+          and <B>after</B> decimal places ( <B>expp</B> and <B>expt</B> are ignored! )
+               <B>format(2.66)</B>          /* 3 */
+               <B>format(2.66,1,1)</B>      /* 2.7 */
+
+      <B>MAX(number[,number]..])</B>
+           returns the largest of given <B>number</B>s.
+               <B>max(2,3,1,5)</B>         /* 5 */
+
+      <B>MIN(number[,number]..])</B>
+           returns the smallest of given <B>number</B>s.
+               <B>min(2,3,1,5)</B>         /* 1 */
+
+      <B>RANDOM([min][,[max][,seed]])</B>
+          returns a pseudorandom nonnegative whole number in the
+          range <B>min</B> to <B>max</B> inclusive.
+
+      <B>SIGN(number)</B>
+           return the sign of <B>number</B> ("-1","0" or "1").
+              <B>sign(-5.2)</B>            /* -1 */
+              <B>sign( 0.0)</B>            /*  0 */
+              <B>sign( 5.2)</B>            /*  1 */
+
+      <B>TRUNC(number(,n))</B>
+          returns the integer part of <B>number</B>, and <B>n</B> decimal places.
+          The default <B>n</B> is zero.
+              <B>trunc(2.6)</B>            /* 2 */
+
+      The following are common math functions that return one
+      real number.
++     <B>ACOS ( num )</B>     Arc-cosine
++     <B>ASIN ( num )</B>     Arc-sine
++     <B>ATAN ( num )</B>     Arc-tangent
++     <B>COS  ( num )</B>     Cosine
++     <B>COSH ( num )</B>     Hyperbolic cosine
++     <B>EXP  ( num )</B>     Exponiate
++     <B>LOG  ( num )</B>     Natural logarithm
++     <B>LOG10( num )</B>     Logarithm of base 10
++     <B>POW10( num )</B>     Power with base 10
++     <B>SIN  ( num )</B>     Sine function
++     <B>SINH ( num )</B>     Hyperbolic sine
++     <B>SQRT ( num )</B>     Square root
++     <B>TAN  ( num )</B>     Tangent
++     <B>TANH ( num )</B>     Hyperbolic tangent
++
++     <B>POW  ( a,b )</B>     raises a to power b
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="word.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="convert.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

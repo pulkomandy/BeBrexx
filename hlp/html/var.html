@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Compound Variable Names </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="template.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="specvar.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Compound Variable Names                            
+</H1>
+                                                         
+      name may be "compound" in that it may be composed of
+      several parts (separated by periods) some of which may have
+      variable values. The parts are then substituted independently,
+      to generate a fully resolved name. In general,
+
+      <B>s0.s1.s2.---.sn</B>         is substituted to form
+
+      <B>d0.v1.v2.---.vn</B>         where d0 is uppercase of s0, and
+                              v1-vn are values of s1-sn
+
+      This facility may be used for traditional arrays,
+      content-addressable arrays, and other indirect addressing
+      modes. As an example, the sequence:
+
+        <B>J = 5;  a.j = "fred";</B>
+
+      would assign fred to the variable <B>A.5</B>.
+
+      The stem of name (i.e. that part up to and including the
+      first ".") may be specified on the <B>DROP</B> and <B>PROCEDURE</B>
+      <B>EXPOSE</B> instructions and affect all variables starting with
+      that stem. An assignment to a stem assigns the new value to
+      all possible variables with that stem.
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="template.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="specvar.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

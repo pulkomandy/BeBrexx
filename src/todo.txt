@@ -1,0 +1,59 @@
+      + fixed %8lG bug for BEOS
+      + add atan2 function
+      + add arc hyp functions
+      + add upper() function
+      + allow foo for foo.r and foo.rexx in LoadFile
+      + increased buffer size for allowed getenv("TEMP") filename
+      + add exists() and statef()
+      + add ceil(), floor(), ln(), asinh(), acosh(), atanh()
+      + add showlist(a) listing all Be applications
+      + fixed bug in Lstrcpy: terminating nul character for string copies
+      + unfixed the above bug. It caused trouble. Rewrote some other BeOS bits intead.
+      + fixed exists() and statef(), they were suffering from the null-terminate problem.
+      + get rid of all printf's
+      + rename portlist to PortManager
+      + make a simple class to encapsulate the various interactions with portmgr.
+      + make CircleToy a fun example
+      + rename CircleToy to something else
+      + adapt squares.rexx to the new CircleToy
+      + revisit whether to have a complete suite in the app
+      + check if standard scripting still does anything
+      + add capability of returning stuff in "result"
+      + revisit the caching scheme in find_app
+      + check if all %8lG bugs are fixed. rerun all tests.
+      + fix "no arguments" behaviour
+      + add terminal-like window for output, errors when run from desktop.
+      + add input capability
+      + Make resource for PortManager, icon, etc, single run.
+      + start up PortManager automatically if not running in constructor.
+      + fix stray O..... files that stay around when ctrl-Cing out.
+      + add some error recovery in i_cmd.c
+      + put temp files in /tmp in UNIX, BEOS.
+      + showlist(r), showlist(s)
+      + added command console for parse pull
+      + add setprompt()
+      + fix "paste" to go through KeyDown()
+      + fix crash of "calc.r" when killed from the desktop by closing window.
+      + Do something about "selecting text" messing up cursor.
+      + fix up single-character inserts.
+      + add a way to chdir().
+      + add getcwd()
+      + add a way to force window closure
+      + add way to force window
+      + save window settings
+      + Fixed abort of PortManager when ctrl-Cing out of shell-started session.
+
+Sometime:
+      - revisit command passing (maybe specifier?)
+      - revisit Messenger passing
+      - revisit returning of results
+      - fix problems with quoted strings in some cases
+      - upgrade to BREXX v 2.0.
+      + nicer icons
+
+Wishlist:
+      - redirect "system" command output to "console"
+      - add garbage collection in portlist
+redo  + changed support for "time(r)" and time(e) to use system_time() in BeOS.
+
+

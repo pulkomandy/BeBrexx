@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Word Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="string.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="math.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Word Functions
+</H1>
+
+      <B>DELWORD(string,n[,length])</B>
+           delete substring of <B>string</B> starting at the <B>n</B>th
+           word and of length <B>length</B> words.
+               <B>delword('one day in the year',3)</B>   /* 'one day' */
+               <B>delword('one day in the year',3,2)</B> /* 'one day year' */
+
+      <B>FIND(string,phrase)</B>
+           returns the word number of the first word of <B>phrase</B>
+           in <B>string</B>. Returns "0" if <B>phrase</B> is not found
+               <B>find('one  day  in  the  year','in      the')</B>  /* 3 */
+
+      <B>JUSTIFY(string,length[,pad])</B>
+           justify <B>string</B> to both margins (the width of margins
+           equals <B>length</B>), by adding <B>pad</B>s between words.
+               <B>justify('one day in the year',22)</B> /*'one  day  in  the year'
+
+      <B>SUBWORD(string,n[,length])</B>
+           return the substring of <B>string</B> that begins at the <B>n</B>th
+           word and is of length <B>length</B> words.
+               <B>subword('one day in the year',2,2)</B> /* 'day in' */
+
+      <B>SPACE(string(,(n)(,pad)))</B>
+           formats the blank-delimited words in <B>string</B> with <B>n</B> <B>pad</B>
+           characters between each word.
+               <B>space(''one day in the year',2)</B> /*'one  day  in  the  year' */
+
+      <B>WORDS(string)</B>
+           return the number of words in <B>string</B>
+               <B>words('One day   in the year')</B>    /* 5 */
+
+      <B>WORD(string,n)</B>
+           return the <B>n</B>th word in <B>string</B>
+               <B>word('one day in the year',2)</B>    /* 'day' */
+
+      <B>WORDINDEX(string,n)</B>
+           return the position of the <B>n</B>th word in <B>string</B>
+               <B>wordindex('one day in the year',2)</B> /* 5 */
+
+      <B>WORDLENGTH(string,i)</B>
+           return the length of the <B>n</B>th word in <B>string</B>
+               <B>wordlength('one day in the year',2)</B> /* 3 */
+
+      <B>WORDPOS(phrase,string[,start])</B>
+           returns the word number of the first word of <B>phrase</B>
+           in <B>string</B>. Returns "0" if <B>phrase</B> is not found
+               <B>wordpos('day in','one day in the year')</B> /* 2 */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="string.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="math.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

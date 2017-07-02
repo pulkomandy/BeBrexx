@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Tokens and Terms </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="running.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="expr.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Tokens and Terms                                    
+</H1>
+                                                          
+      REXX expressions and instructions may contain the following
+      items:
+
+      comment
+          A comment is a sequence of characters (on one or
+          more lines) delimited by <B>/*</B> and <B>*/</B>. Nested comments
+          are also valid, as <B>/* hello /* joe */ */</B>
+
+      string
+          A string is a sequence of characters delimited by a
+          single quote or double quote. Use two quotes to
+          obtain one quote inside a string. A string may be
+          specified in hexadecimal if the final quote is
++         followed by an X. If it followed by an H then is
++         treated as a hexadecimal number. Some valid
+          strings are:
+            <B>"Marmita" 'He''s here'  '2ed3'x  '10'h (=16)</B>
+
+      number
+          A number is a string of decimal digits with or without
+          a decimal point. A number may be prefixed with a plus
+          or minus sign, and/or written in exponential notation.
+          Some valid numbers are:
+            <B>23  12.07  141 12.2e6  +5  '-3.14'</B>
+
+      symbol
+          A symbol refers to any group of characters from the
+          following selection:
+
+             <B>A-Z, a-z, 0-9, @#$_.?!</B>
+
+          Symbols are always translated to uppercase. Variables
+          are symbols but the first character must not be a
+          digit 0-9 or a dot '.'. Each symbol may consist of
+          up to 250 characters.
+
+      function-call
+          A function-call invokes an internal, external, or
+          built-in routine with 0 to 10 argument strings.
+          The called routine returns a character string.
+          A function-call has the format:
+
+          <B>function-name( [expr][,[expr]...)</B>
+
+          function-name must be adjacent to the left
+          parenthesis, and may be a symbol or a string.
+
+          All procedures can be called as functions or procedures.
+          If a function is called as a procedure ie. <B>call left 'Hello',4</B>
+          then the return string will be returned in the variable
+          <B>RESULT</B> where is this example will contain the string 'Hell'
+
+          ie.   <B>copies('ab',3)</B>  /* will return 'ababab' */
+                <B>'cd'()</B>          /* will call DOS and return
+                                    current directory */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="running.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="expr.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

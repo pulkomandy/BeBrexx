@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Templates for ARG, PULL, and PARSE </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="instr.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="var.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Templates for ARG, PULL, and PARSE                
+</H1>
+                                                        
+      The <B>PULL</B>, <B>ARG</B> and <B>PARSE</B> instructions use a template to
+      parse a string.
+
+      - The simplest template is a list of variables where is
+        each of them is assigned one word from the string, except
+        the last variable in the list which will contain the rest
+        of the string.
+           <B>parse value "one two   three four " with a b c</B>
+             now a="one"; b="two"; c="three four"
+           <B>parse value "one two   three four " with a b c d e</B>
+             now a="one"; b="two"; c="three"; d="four" and e=""
+        A dot <B>'.'</B> can be in the place of one or more variables,
+        it is used as a place-holder.
+           <B>parse value "one two   three four " with a . . d</B>
+             now a="one"; d="four"
+
+      - A more complex parsing is to use patterns for triggering.
+           <B>number</B>    - which specifies an absolute position in string
+                       1 - is the first character in string
+         <B>[+|-]number</B> - signed numbers are used as a relative positioning
+
+           <B>parse value "one two   three four " with 2 a 6 b</B>
+             now a="ne t"; b="wo   three four "
+           <B>parse value "one two   three four " with 2 a +2 b</B>
+             now a="ne"; b=" two   three four "
+
+         <B>string</B>    - may be used as a target position.
+           <B>parse value "marmita/bill/vivi' with a '/' b '/' c</B>
+             now a="marmita"; b="bill"; c="vivi"
+         (name)    - also as a target may be used a variable
+                     encolsed in parenthesis
+           <B>t = "%%"</B>
+           <B>parse value "aabbcc%%ddeeff%%gg%%" with . (t) middle (t) .</B>
+             now middle="ddeeff"
+
+      A <B>comma</B> can be used as a "trigger" to move to the next
+      string when there is more than one to be parsed (e.g. when
+      there is more than one argument string to a routine).
+           <B>call myproc 'Hi',3,4</B>
+           <B>exit</B>
+           <B>myproc:</B>
+           <B>parse arg first, second, third</B>  /* now first="Hi"  */
+           <B>...</B>                             /*     second=3    */
+                                           /*     third=4     */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="instr.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="var.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

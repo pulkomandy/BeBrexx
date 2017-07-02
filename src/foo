@@ -1,0 +1,21 @@
+      for (int ix = teamlist.CountItems() - 1; ix >= 0; ix--) {
+         teamid = (team_id) teamlist.ItemAt(ix);
+         be_roster->GetRunningAppInfo(teamid, &appinfo);
+
+         the_application = BMessenger(appinfo.signature);
+
+         if (the_application.IsValid()) {
+/*
+*   We have a valid application. Now see if it responds to a simple scripting
+*   message, such as getting its name.
+*/
+            status_t result;
+            BMessenger foo;
+            BMessage getname(B_GET_PROPERTY), reply;
+            getmsgr.AddSpecifier("Name");
+            result = the_application.SendMessage(&getname, &reply, 1000000, 1000000);
+            if (result == B_OK) {
+               ...
+            }
+         }
+      }

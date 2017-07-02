@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Rexx Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="builtin.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="string.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Rexx Functions
+</H1>
++     <B>ADDR(symbol)</B>
++          returns the physical address of symbol contents.
++          (Normalized for MSDOS, ie  seg:ofs = seg*16+ofs)
+          <B>i = 5;   say addr('i')</B>  /* something like 432009  decimal*/
+                   <B>say addr('j')</B>  /* -1, is J variable doesn't exist */
+
+      <B>ADDRESS()</B>
+           return the current environment for commands.
+                   <B>say address()</B>    /* would display:  SYSTEM */
+
+      <B>ARG([n[,option]])</B>
+          <B>ARG()</B>  - returns the number of arguments
+          <B>ARG(n)</B> - return then nth argument
+          <B>ARG(n,option)</B> - option may be <B>Exist</B> or <B>Omitted</B>
+              (only the first letter is significant) test
+               whether the <B>n</B>th argument <B>E</B>xists or is <B>O</B>mitted.
+               Returns "0" or "1"
+                   <B>call myproc 'a',,2</B>
+                   <B>....</B>
+                   <B>myproc:</B>
+                   <B>say arg()</B>           /*  3  */
+                   <B>say arg(1)</B>          /* 'a' */
+                   <B>say arg(2,'O')</B>      /*  1  */
+                   <B>say arg(2,'E')</B>      /*  0  */
+
+      <B>DATATYPE(string(,type))</B>
+          <B>DATATYPE(string)</B> - returns <B>"NUM"</B> is string is a valid
+              REXX number, otherwise returns <B>"CHAR"</B>.
+          <B>DATATYPE(string,type)</B> - returns "0" or "1" if string
+              is of the specific type:
+            - <B>Alphanumeric</B>:   characters  A-Z, a-z and 0-9
+            - <B>Bits</B>:           characters  '0' or '1'
+            - <B>Lowercase</B>:      characters  a-z
+            - <B>Mixed</B>:          characters  A-Z, a-z
+            - <B>Number</B>:         is a valid REXX number
+            - Symbol:         characters  A-Z, a-z, 0-9, @%_.!#
+            - <B>Uppercase</B>:      characters  A-Z
+            - <B>Whole-number</B>:   a valid REXX whole number
+            - <B>X</B> (heXadecimal):a valid HEX number
+          (only the first letter of type is required)
+
++         The special type <B>'Type'</B> returns the either <B>INT</B>, <B>REAL</B>,
++         or <B>STRING</B> the way the variable is hold into memory
++         Usefull when you combine that with <B>INTR</B> function
+
+              <B>say datatype('123')</B>        /* NUM */
+              <B>say datatype('21a')</B>        /* CHAR */
+              <B>say datatype(01001,'B')</B>    /*  1  */
++             <B>say datatype(i,'T')</B>        /* maybe STRING */
+
+
+      <B>DATE((option))</B>
+          return current date in the format: dd Mmm yyyy
+              <B>say date()</B>      /* 14 Feb 1993 */
+          or formats the output according to option
+           - <B>Days</B>        returns number of days since 1-Jan as an integer
+           - <B>European</B>    returns date in format dd/mm/yy
+           - <B>Month</B>       returns the name of current month, ie. March
+           - <B>Normal</B>      returns the date in the default format dd Mmm yyyy
+           - <B>Ordered</B>     returns the date in the format yy/mm/dd (useful
+                         for sorting)
+           - <B>Sorted</B>      returns the date in the format yyyymmdd (suitable
+                         for sorting)
+           - <B>USA</B>         returns the date in the format mm/dd/yy
+           - <B>Weekday</B>     returns the name of current day of week ie. Monday
+
+      <B>DESBUF()</B>
+          destroys the system stack, and returns the number of
+          lines in system stack.
+                <B>push 'hello'</B>      /* now stack has one item */
+                <B>call  desbuf</B>      /* stack is empty, and RESULT=1 */
+
+      <B>DIGITS()</B>
+           returns the current setting of <B>NUMERIC DIGITS</B>.
+           Not used.
+
+      <B>ERRORTEXT(n)</B>
+           returns the error message for error number n.
+                <B>say errortext(8)</B>   /* "Unexpected THEN or ELSE" */
+
+      <B>FORM()</B>
+           returns the current setting of <B>NUMERIC FORM</B>.
+           Not used.
+
+      <B>FUZZ()</B>
+           returns the current setting of <B>NUMERIC FUZZ</B>.
+           Not used.
+
+      <B>GETENV(varname)</B>
+           returns the environment variable "varname"
+           ie.      <B>say getenv("PATH")</B>
+
++     <B>INTR( num, reg-string )</B>
++         executes a 80x86 soft-interrupt.
++         num = interrupt number, and reg-string is a string
++         in the format <B>"ax=hex-num bx=hex-num ...."</B>
++         returns in the same format the registers
+              <B>regs = intr('10'h, 'ax=0003')</B>  /* will change video mode */
+              <B>say regs</B>   /* AX=0003 BX=7B82 CX=....  FLAGS=C-PAS */
+          flags are returned as a string with characters
+              <B>C</B> - for carry, <B>P</B>-parity, <B>A</B>-Auxiliary carry, <B>S</B>-sign,
+              <B>O</B> - overflow, <B>T</B>-trap, <B>I</B>-interrupt ...
+
++     <B>LOAD ( file )</B>
++         load a rexx file so it can be used as a library.
++         load first searches the current directory and on
++         error it searches the directory defined by the
++         environment variable RXLIB.
++         (It would be nice to add in your AUTOEXEC.BAT the command
++             <I>SET RXLIB=C:\PATH\WHERE\REXX\IS
++             <I>SET TEMP=C:\TEMP
++          a temporary directory, maybe is allready set from Ms-Windows)
++         returns
++           "-1" when file is already loaded
++            "0" on success
++            "1" on error opening the file
+
+      <B>MAKEBUF()</B>
+          create a new system stack, and returns the number of
+          system stacks created until now (plus the initial one).
+                <B>push 'hello'; say queued()</B>  /* display 1           */     
+          	<B>call makebuf</B>                /* create a new buffer */
+                <B>push 'aloha; say queued()</B>   /* display again 1     */
+
+      <B>QUEUED()</B>
+           return the number of lines in the rexx stack
+              <B>push 'aha'</B>
+              <B>say  queued()</B>    /* 1 */
+              <B>push 'hello'</B>
+              <B>say  queued()</B>    /* 2 */
+              <B>call desbuf</B>
+              <B>say  queued()</B>    /* 0 */
+
++     <B>SOUNDEX(word)</B>
++         return a 4 character soundex code of word
+
+      <B>SOURCELINE([n])</B>
+          return the number of lines in the program, or the nth
+          line.
+              <B>say sourceline()</B>  /* maybe 100 */
+              <B>say sourceline(1)</B> /* maybe "/**/" */
+
+      <B>STORAGE((address(,(length)(,data))))</B>
+|         returns the current free memory size expressed as a
+|         decimal string if no arguments are specified.
+|         Otherwise, returns <B>length</B> bytes from the user's memory
+|         starting at address.  The <B>length</B> is in decimal;
+|         the default is 1 byte.  The <B>address</B> is a decimal number
+|         (Normalized address for MSDOS ie. seg:ofs = seg*16+ofs)
+|         If data is specified, after the "old" value has been
+|         retrieved, storage starting at address is overwritten
+|         with data (the length argument has no effect on this).
+               <B>say storage()</B>                   /* maybe 31287 */
+               <B>say storage(1000,3)</B>             /* maybe "MZa" */
+               <B>a = "Hello"</B>
+               <B>say storage(addr('a'),5,'aaa')</B>  /* "Hello" */
+               <B>say a</B>                           /* aaalo */
+
+      <B>SYMBOL(name)</B>
+          return <B>"BAD"</B> if name is not a valid REXX variable
+          name,  <B>"VAR"</B> if name has been used as a variable, or
+          <B>"LIT"</B> if it has not.
+               <B>i = 5</B>
+               <B>say symbol('i')</B>       /* VAR */
+               <B>say symbol(i)</B>         /* LIT */
+               <B>say symbol(':asd')</B>    /* BAD */
+
+      <B>TIME((option))</B>
+          return the local time in the format: hh:mm:ss
+          if option is specified time is formated as:
+            - <B>Civil</B>    returns time in format  hh:mmxx  ie.  10:32am
+            - <B>Elapsed</B>  returns elapsed time since rexx timer was reset
+                       or from begging of program in format  ssssss.uu
+            - <B>Hours</B>    returns number of hours since midnight
+            - <B>Long</B>     returns time and milliseconds   hh:mm:ss.uu
+            - <B>Minutes</B>  returns number of minutes since midnight
+            - <B>Normal</B>   returns time in format hh:mm:ss
+            - <B>Reset</B>    returns elapsed time in format ssssss.uu (like
+                       Elapsed) and resets rexx internal timer.
+            - <B>Seconds</B>  returns number of seconds since midnight
+
+      <B>TRACE((option))</B>
+          returns current tracing option. If option is specified
+          then sets to new tracing option. Look up instruction <B>TRACE</B>.
+             <B>say trace()</B>      /* normally 'N' */
+
+      <B>VALUE(name)</B>
+          returns the value of the variable name.
+             <B>i = 5;  j = i</B>
+             <B>say value(j)</B>       /*  5  */
+             <B>say value('j')</B>     /* 'i' */
+
++     <B>VARTREE((symbol)(,option))</B>
++         returns the binary tree of the variables in the format
++         <B>var = "value"  <cr></B>
++         if option is specified and the first letter is 'Depth'
++         then it prints out the binary tree in the format
++         <B>depth var = "value"  <cr></B>  (used for balancing of variables )
++         symbol may be nothing for main bin-tree or a stem
++         for an array bin-tree ie. "B."
++         <B>VARTREE</B> is an easy way to store all or some variables
++         in a file or in stack and restores them later.
++             <B>call write "vars.$$$", vartree()</B>  /* stores all variables   */
++             <B>exit</B>                              /* in the file "vars.$$$" */
++         on a later run you can do
++          <B>do until eof("vars.$$$")</B>        /* this will read all variables */
++             <B>interpret read("vars.$$$")</B>   /* from file, and restore them  */
++          <B>end</B>
++         WARNING! <B>VARTREE</B> is not fully implemented and may not work when
++         variables have non-printable characters.
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="builtin.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="string.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

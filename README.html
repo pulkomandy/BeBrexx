@@ -1,0 +1,427 @@
+<html>
+<body bgcolor="#ffffff" text="#000000">
+<head>
+<meta content="Verified Logic, BeOS BRexx version 1.3.2">
+<title> BRexx Version 1.3.2 for BeOS </title>
+</head>
+
+
+<center> <h1> BRexx Version 1.3.2 for BeOS. </h1> </center>
+<center> by Bill Vlachoudis </center>
+<center> port/additions by <a href="mailto:langeveld@verifiedlogic.com">Willy Langeveld</a></center>
+
+<hr>
+
+<h2> Introduction </h2>
+<p> The REXX interpreter before you is the first public release of a port
+of Bill Vlachoudis' BRexx version 1.3 to BeOS, with a number of improvements and 
+additions by myself, most notably the support of application scripting.</p>
+<p>Note that this port is very different from David Feugey's straight port of version 2.0,
+which was posted to BeWare recently.</p>
+<p>Documentation for the original version can be found in the
+<tt>hlp</tt> directory, which contains the following text documents: </p>
+
+<ul>
+<li> <a href="hlp/about.txt"><tt>about.txt</tt></a>, a brief description of BRexx</li>
+<li> <a href="hlp/internal.txt"><tt>internal.txt</tt></a>, revealing some internal design choices</li>
+<li> <a href="hlp/rx.txt"><tt>rx.txt</tt></a>, a text version of the manual</li>
+<li> <a href="hlp/rxpx.txt"><tt>rxpx.txt</tt></a>, description of (for BeOS irrelevant) support for the
+     Paradox database under Windows.</li>
+</ul>
+
+<p> There is also a full hypertext <a href="hlp/html/rx.html">manual</a>,
+for version 1.3. Please refer to this manual and the above text files for all
+documentation about REXX in general and BRexx in particular.</p>
+
+
+<p> Installation instructions and information about the many changes and additions for version
+1.3.2 (the BeOS version) are described below. </p>
+
+<h3>Contents</h3>
+<ul>
+<li> <a href="#installation">Installation</a> </li>
+<li> <a href="#support">Support for BeOS application scripting</a> </li>
+<li> <a href="#features">Additional features</a> </li>
+<li> <a href="#functions">Additional functions</a> </li>
+<li> <a href="#ack">Acknowledgements</a> </li>
+</ul>
+
+<hr>
+
+<h2><a name="installation">Installation</a></h2>
+
+<ul></ul>
+<p>Installation of BRexx is not too difficult.</p>
+First open a Terminal window and change to the directory into which
+BRexx was unzipped:</p> 
+
+<ul><tt>
+cd /boot/home/apps/brexx
+</tt></ul>
+
+<p>(or wherever it is). Now type:</p>
+
+<ul><tt>
+make world
+</tt></ul>
+</ul>
+
+<p>This causes all the programs and libraries to be compiled and linked,
+and installed in the proper location. It then will run the test script
+called <tt>squares.rexx</tt> to verify that the installation completed
+correctly. For those who want to customize their installation, and who
+are curious about where things will go, please examine the
+<tt>makefile</tt>.</p>
+
+<hr>
+
+<h2><a name="support">Support for BeOS application scripting</a></h2>
+
+<h3>Introduction</h3>
+<p>One of the main functions of REXX as a language is to interact with
+a "host environment". Usually the host environment is the command shell,
+and BRexx version 1.3 is no exception. See the relevant manual section
+for <a href="hlp/html/cmds.html">details</a>. In fact BRexx has a particularly
+simple way of retrieving <a href="hlp/html/builtin.html">output from shell commands</a>.</p>
+
+<p>The traditional way of selecting a host environment is by using the <tt>address</tt>
+construct, for example:
+</p>
+
+<ul><tt>address COMMAND ls </tt></ul>
+
+<p>The BeOS version can also interact with other environments, most notably any
+application that is running under the BeOS. An example BRexx script might have: </p>
+
+<ul><tt>address 'NetPositive'<br>
+        'set Title of Window 0 to "This is a different title"'
+</tt></ul>
+
+<p>These two lines would set the window title of the first NetPositive window to 
+"This is a different title". Equivalently, from the command line, we could have
+just typed:</p>
+
+<ul><tt>rx - "address 'NetPositive' 'set Title of Window 0 to \"This is a different title\"'"
+</tt></ul>
+
+<p>where we needed to escape the inner level of double-quotes.</p>
+
+<p>One can also get information from an application. For example:</p>
+
+<ul><tt>rx - "address 'NetPositive' 'get Title of Window 0'; say result"<br>
+        This is a different title
+</tt></ul>
+
+<p> The variable <tt>result</tt> is a special variable reserved for the purpose of
+returning results from commands addressed to some environment.</p>
+
+<p> Generally, applications may return several lines worth of results. This is solved
+in the BeOS version by extending the functionality of the <tt>result</tt> variable:
+it is in fact a <a href="hlp/html/var.html">compound variable</a>, with
+<tt>result.0</tt> containing the number of lines of results, and each result line
+stored in <tt>result.i</tt> with <tt>i</tt> ranging from 1 to <tt>result.0</tt>.
+Simple commands usually return a single line, and the value of <tt>result</tt> is
+the same as that of <tt>result.1</tt>.
+</p>
+
+<p>Moreover, BeOS applications return results in the form of BMessages which may contain
+a variety of data types in fields which may have names. In order to find out precisely what
+it is that the application is returning, the <tt>result</tt> compound variable has
+some additional fields, <tt>result.name.i</tt> and <tt>result.type.i</tt>. As an example,
+we list the full set of "suites" that is supported by NetPositive:</p>
+
+<ul><tt><pre>rx - "address 'NetPositive' 'getsuites'; do i = 1 to result.0; say result.name.i result.type.i result.i; end"
+suites B_STRING_TYPE suite/vnd.Be-application
+suites B_STRING_TYPE suite/vnd.Be-handler
+messages B_PROPERTY_INFO_TYPE
+        property   commands                            specifiers
+--------------------------------------------------------------------------------
+          Window                                       INDEX REV.INDEX 
+          Window                                       NAME
+          Looper                                       INDEX REV.INDEX 
+          Looper                                       ID
+          Looper                                       NAME
+            Name   B_GET_PROPERTY                      DIRECT
+          Window   B_COUNT_PROPERTIES                  DIRECT
+         Loopers   B_GET_PROPERTY                      DIRECT
+         Windows   B_GET_PROPERTY                      DIRECT
+          Looper   B_COUNT_PROPERTIES                  DIRECT
+messages B_PROPERTY_INFO_TYPE
+        property   commands                            specifiers
+--------------------------------------------------------------------------------
+          Suites   B_GET_PROPERTY                      DIRECT
+       Messenger   B_GET_PROPERTY                      DIRECT
+    InternalName   B_GET_PROPERTY                      DIRECT
+error B_INT32_TYPE 0</pre>
+</tt></ul>
+
+<p> In the above, various "properties" are listed, with names such as "suites", "messages",
+and "error", with types such as "B_STRING_TYPE" and "B_INT32_TYPE". The "messages" property
+has a <tt>result.i</tt> that contains several lines of text.</p>
+
+<p> The implementation of BeOS-native scripting in BRexx is based on the source code for
+a public domain utility called <tt>hey</tt>, written by Atilla Mezzei. The
+<a href="hlp/html/appscripting.html">documentation</a>
+(adapted for its usage inside BRexx) has <a href="hlp/html/appscripting.html">further details
+and examples</a>.</p>
+
+<h3>Simple scripting vs. BeOS-native scripting</h3>
+
+<p>In the previous section I showed examples of what I call "BeOS-native scripting",
+i.e. scripting that uses the BeOS built-in scripting facilities. As nice as it is
+to have scripting facilities built into just about every application written on
+the BeOS, it is in the end not very useful, unless the application writer puts in
+one or more suites that deal with the application's internals. After all, it is
+cute to be able change the title of a document window, but that change goes on behind
+the back of the application itself: the application does not know the title changed,
+and won't be able to save the project with the changed title.</p>
+
+<p>In addition, when the application has several windows open, and when each window
+has a complicated user interface with several elements (called a "View" in BeOS
+parlance) each of which may be divided up in more elements, then it can be quite
+annoying to do the simplest of things:</p>
+
+<ul><tt>rx - "address 'SomeApp' 'get Frame of View 12 of View 3 of View 6 of Window 12'; say result"<br>
+        20 20 100 100
+</tt></ul>
+
+<p> Also, the number of "verbs" allowed is limited to the following set: <tt>getsuites,
+get, set, execute, count, create, delete, quit, save </tt> and <tt>load</tt>.
+Admittedly, one can get pretty far with these. For example,
+in order to draw a rectangle in some application, one might need to do something
+like this:</p>
+
+<ul><tt>address 'SomeApp'<br>
+        'create Rectangle of View 12 of Window 6 with Frame=BRect(20,20,100,100)'"
+</tt></ul>
+
+<p>It would clearly be better if one could more directly express to an application
+what it is that one wants:</p>
+
+<ul><tt>'address 'SomeApp'<br>
+         'rect 20 20 100 100'
+</tt></ul> 
+
+<p>Although there is more to the story than that, this is clearly a much more
+user-friendly way of scripting an application. The BeOS version of BRexx therefore
+implements an alternative way to script applications.
+The drawback of this approach is that application writers need to implement this
+way of scripting in their applications. Since they need to implement some form of
+scripting anyway, this is not a big problem in principle. In practice, of course, it
+is only useful if all application writers implement the same way of scripting. </p>
+
+<p>In order to facilitate this way of scripting, BRexx comes with a shared library,
+called <tt>libPortManager.so</tt>, which does all the work needed. The
+program <tt>Squares</tt> is supplied as an example application, controlled by the
+accompanying script <tt>squares.rexx</tt>.</p>
+
+
+<h3><tt>PortManager</tt> and the <tt>PortManager</tt> class</h3>
+
+<p>With BRexx comes an application called <tt>PortManager</tt>.
+<tt>PortManager</tt> is started up automatically when needed, and
+stays around until the system is restarted. It keeps a list of
+"ports" around, that allow BRexx to communicate directly with an
+application, rather than through a series of detours through the
+application, its windows and the views inside of views in the
+windows. BRexx first checks to see if a given port exists in the
+list maintained by <tt>PortManager</tt> and if no such port exists,
+
+BRexx checks if it is the name of an application (one can bypass the
+<tt>PortManager</tt> list by prefixing the application name with
+a colon).</p>
+
+<p><tt>Other than that, PortManager</tt> and the <tt>PortManager</tt>
+class are only of interest to developers wanting to implement this type
+of scripting into their applications. </p>
+
+<p> The <tt>PortManager</tt> class implements everything needed for
+this type of scripting: it handles the interaction with the
+<tt>PortManager</tt> application, it does most of the work involved in
+scripting, and it also provides a function that will add a BeOS-native
+scripting suite, so that the program can also be scripted without
+BRexx (using <tt>hey</tt> for example).</p>
+
+<p> In order to use the class, one includes the <tt>PortManager.h</tt>
+header file in ones application. It is located in the <tt>PortLib</tt>
+directory of the BRexx distribution. One links with the
+<tt>libPortManager.so</tt> shared library, which during
+installation is copied to <tt>/boot/home/config/lib</tt>.</p>
+
+
+<h3>The example program Squares and squares.rexx</h3>
+
+As an example, a program called <tt>Squares</tt> is provided in
+the <tt>Squares</tt> directory. The BRexx script <tt>squares.rexx</tt>
+shows how one interacts with the <tt>Squares</tt> application from
+BRexx. Both are commented and fairly self-documenting.
+
+<ul></ul>
+
+<hr>
+
+<h2><a name="features">Additional features</a></h2>
+
+In addition to the standard features described in the <a href="hlp/html/rx.html">manual</a>
+the following changes and enhancements are present in this version of
+BRexx.
+
+<h3>File extensions supported</h3>
+<ul>
+     The shell command rx accepts the basename of its &ltfile&gt argument for files
+     with a .r extension or a .rexx extension, in addition to files without extension.
+</ul>
+
+<h3>Desktop support</h3>
+<ul>
+     BRexx can also run scripts from the desktop: just choose <tt>rx</tt> from the
+"Open With..." menu when you want to run a REXX script. If needed, BRexx will open
+a <a href="#console">console window</a> for I/O.
+</ul>
+
+<h3>Temporary files</h3>
+<ul>
+     When BRexx executes commands directed to the shell environment, it creates temporary files.
+     By default these files are created in /tmp for the BeOS version. A protection was applied
+     such that ctrl-C's don't leave stray temporary files around.
+</ul>
+
+<h3><a name="console">The command console</a></h3>
+<ul>
+     The BeOS version has a "console", and all standard I/O (such as the "say" and
+     "parse pull" constructs) go through this console. The advantages of this are
+     two-fold. For one thing, the "parse pull" construct has command-line editing and
+     command history and a host of other functions (type ctrl-R for online help). For
+     another, if the BRexx script is launched from the desktop, the input and output
+     are redirected to a separate "console window". This redirection can also be forced
+     by the <a href="#opencon"><tt>OpenConsole()</tt></a> call. If the redirection is not
+     forced, the console window will open only when I/O is performed that requires the
+     window. When a BRexx script is launched from the desktop and the console is opened,
+     the script will not exit until the user manually closes the window, or until the
+     script forces the console window closed using the <a href="#closecon"><tt>CloseConsole()</tt></a>
+     call before exiting.
+</ul>
+
+<hr>
+
+<h2><a name="functions">Additional functions</a></h2>
+
+<h3><tt>acos(x), asinh(x), atanh(x)</tt></h3>
+<ul> arc-hyperbolic functions. </ul>
+
+<h3><tt>atan2(y, x)</tt></h3>
+<ul> computes arc-tangent(y/x) with the correct sign in all quadrants.</ul>
+
+<h3><tt>ceil(x), floor(x)</tt></h3>
+<ul> returns the whole number less than (<tt>floor()</tt>) or larger than (<tt>ceil()</tt>) x.
+</ul>
+
+<h3><tt>chdir(&ltdirectory&gt)</tt></h3>
+<ul> Changes the default directory to the specified one. All commands
+     addressed to "system" (or its equivalents) will be executed with
+     this directory as the default directory.
+</ul>
+
+<h3><tt>exists(&ltfilename&gt)</tt></h3>
+<ul> returns 1 if file exists, 0 otherwise.</ul>
+
+<h3><tt>getcwd()</tt></h3>
+<ul> Returns the current default directory. </ul>
+
+<h3><tt>ln(x), log(x)</tt></h3>
+<ul> return the natural logarithm of x. </ul>
+
+<h3><tt>log10(x)</tt></h3>
+<ul> returns the logarithm base-10 of x. </ul>
+
+<h3><tt>setprompt(&ltprompt&gt)</tt></h3>
+<ul> Sets the prompt used for the "parse pull" command. </ul>
+
+<h3><tt>showlist(&lttype&gt [, &ltpad character&gt])</tt></h3>
+<ul> returns a string of all message ports of a certain type, separated by the
+     pad character (which defaults to a space). The type can be one of three
+     categories:
+<li> A[pplications]: a list of main message ports for all applications that are
+     currently running which accept standard BeOS messages.</li>
+<li> S[ignatures]: a list of main message ports for all applications, by signature,
+     that are currently running and which accept standard BeOS messages. </li>
+<li> R[egistered]: a list of all ports that are registered with the PortManager
+     (<a href="#support">see here</a>). </li>
+</ul>
+
+<h3><tt>statef(&ltfilename&gt)</tt></h3>
+<ul> returns a string with information about the state of
+     a file or a directory in the form: <br>
+     <tt> FILE 597 1 RW-R----- 1998/05/20 15:47 </tt><br>
+     for a file, or <br>
+     <tt> DIR 2048 4 RWXR-XR-X 1999/03/10 15:33 </tt><br>
+     for a directory. The order of the blank-terminated entries is: <br>
+     &lttype (FILE or DIR)&gt &ltsize (in bytes)&gt &ltsize (in blocks)&gt  &ltprotection bits&gt
+     &ltdate last modified&gt &lttime last modified&gt<br>
+     This function follows links.
+</ul>
+
+<h3><tt>upper(s)</tt></h3>
+<ul> returns string s converted to all uppercase. </ul>
+
+<h3><tt><a name="opencon">OpenConsole</a>([&ltwindow title&gt] [,&ltleft&gt, &lttop&gt, &ltwidth&gt, &ltheight&gt])</tt></h3>
+<ul> If the console window is not yet open, this opens a console window, with the
+     optional title and/or location/size. if the console window is already open, the
+     window title is changed, if the first argument is present, and the window location
+     and size are changed when the second through last argument are present.
+     See also <a href="#console">here</a>.
+</ul>
+
+<h3><tt><a name="closecon">CloseConsole</a>()</tt></h3>
+<ul> Closes the console window (if it is open). See also <a href="#console">here</a>. </ul>
+
+<hr>
+
+<h2><a name="ack">Acknowledgements</a></h2>
+
+<p>Many thanks to Atilla Mezzei for <tt>hey</tt> module, Chris Herborth
+and Dominic Giampaolo for various discusions, Marvin Weinstein for
+extensive beta-testing, and to Eric Shepherd for his simple
+<tt>TextEditor</tt> (part of the <tt>sample-code</tt> directory of the
+<tt>optional</tt> folder) from which a number of things were stolen.
+Because of this, I am obliged to include the following copyright
+notice and disclaimer.</p>
+
+<p>Parts of this code are subject to the following:</pp>
+
+<pre>
+Copyright 1991-1999, Be Incorporated.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions, and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. The name of the author may not be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+
+<p>Other parts of this code are freeware or public domain, as indicated
+in their respective documentation. As to myself, I assume no warranties
+of any kind.</p>
+
+</body>
+</html>

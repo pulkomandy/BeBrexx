@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Issuing Commands to Host System </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="specvar.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="debug.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Issuing Commands to Host System
+</H1>
+
+      In this REXX version all the commands are executed via
+      command interpreter (normally COMMAND.COM)
+         So valid environments are:
+          o  <B>COMMAND, SYSTEM, DOS, ''</B>: load and execute command
+             interpreter from COMSPEC env. variable.
++         o  <B>INT2E</B>: executes commands via interrupt 2E
++            the undocumented back door to COMMAND.COM.
++            Normally it is faster then environments <B>COMMAND</B> etc.
++            because there is no need to load an extra copy of
++            COMMAND.COM before execute the command.
++            Note. Commands executed through <B>INT2E</B> cannot be
++            redirected to stack. There is a BUG that causes
++            sometimes a Fatal error. While executing a cmd
++            via int2e and you press Control-C you may have
++            some very strange results.
+
+      A command is an expression, which may include
+      function-calls, arithmetic operations, and so on. Operators
+      or other special characters (for example, "(" or "*") must
+      be specified in a string if they are to appear in the
+      issued command.
+
+|     Commands to environments <B>COMMAND</B>, <B>SYSTEM</B> may return its
+|     result to REXX stack when at the end of cmd appears the
+|     string <B>(STACK</B>, <B>(FIFO</B> or <B>(LIFO</B> (with the parenthesis).
+|                    <B>"dir (stack"</B>
+|     If the string <B>STACK></B> appears in the beginning of cmd, then
+|     stack is redirected to stdin of cmd.
+|                    <B>"stack> date"</B>
+|     Stack is flushed after redirecting it to stdin.
+
+      Redirection to or from STACK will create a temporary file
+      with name like OAA.AAB that will be erased. It is nice
+      to redirect all your temporary pipe files to a temporary
+      directory. To do this set in your AUTOEXEC.BAT a new line
+      containing:
+                 <I>SET TEMP=C:\TEMP</I>
+      where C:\TEMP is the temporary directory (which must exist)
+      and you must have Read/Write authority.
+      (Look also below at <B>LOAD</B> function )
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="specvar.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="debug.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

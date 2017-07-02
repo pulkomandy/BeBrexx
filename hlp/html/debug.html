@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Interactive Debugging </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="cmds.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="builtin.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Interactive Debugging
+</H1>
+
+      You can enter the interactive debuging either by executing
+      a <B>TRACE</B> instruction with a prefix "?" or when calling RX
+      from dos command line issue as a first argument the trace
+      option:   <I>C:> rx ?r awari.r</I>
+      In interactive debug, interpreter pauses before the execution
+      of the instructions that are to be traced and prompts for
+      input. You may do one of following things:
+       o  Enter a null line to continue execution.
+       o  Enter a list of REXX instructions, which are
+          interpreted immediately (<B>DO-END</B> instructions must be
+          complete, etc.).
+
+          During the execution of the string, no tracing takes
+          place, except that non-zero return codes from host
+          commands are displayed. Execution of a <B>TRACE</B> instruction
+          with the "?" prefix turns off interactive debug mode.
+          Other <B>TRACE</B> instructions affect the tracing that occurs
+          when normal execution continues.
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="cmds.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="builtin.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

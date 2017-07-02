@@ -1,0 +1,1479 @@
+                                                               o o
+                                                             ____oo_
+                                                            /||    |\
+                                                             ||    |
+                                                             `.___.'
+                                                             MARMITA
+
+
+
+
+
+
+
+
+
+
+               **********
+                ***    ***
+                 **     ***
+                **      ***
+                **      **      ****    ***    ***   ***    ***
+                **     **      **  **     **  ** *     **  ** *
+               *********      **   **     ** **        ** **
+               **  ***       **   **       ***          ***
+               **   **      *******        **           **
+              **     **     **            ****         ****
+              **      **    **           ** **  *     ** **  *
+             ***      ***   **   **   * **   ***   * **   ***
+            ****     ******  *****    ***     **   ***     **
+
+
+                 Restructured    EXtended      eXecutor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            Bill N. Vlachoudis
+                       bnv@nisyros.physics.auth.gr
+                          V.Vlachoudis@cern.ch
+                                 2:410/1.6
+
+
+      Contents
+       ßßßßßßßß
+
+      Syntax Notation . . . . . . . . . . . . . . . . . . . . . 1
+      First Column  . . . . . . . . . . . . . . . . . . . . . . 1
+
+      Installation  . . . . . . . . . . . . . . . . . . . . . . 1
+      Running . . . . . . . . . . . . . . . . . . . . . . . . . 2
+
+      Tokens and Terms  . . . . . . . . . . . . . . . . . . . . 2
+      Expressions . . . . . . . . . . . . . . . . . . . . . . . 3
+
+      Instructions  . . . . . . . . . . . . . . . . . . . . . . 5
+
+      Templates for ARG, PULL and PARSE . . . . . . . . . . .  12
+
+      Compound Variable Names . . . . . . . . . . . . . . . .  13
+
+      Special Variables . . . . . . . . . . . . . . . . . . .  13
+      Issuing commands to Host system . . . . . . . . . . . .  14
+
+      Interactive Debugging . . . . . . . . . . . . . . . . .  15
+
+      Built-In Functions  . . . . . . . . . . . . . . . . . .  16
+      Rexx Functions  . . . . . . . . . . . . . . . . . . . .  16
+      String Functions  . . . . . . . . . . . . . . . . . . .  20
+      Word Functions  . . . . . . . . . . . . . . . . . . . .  22
+      Math Functions  . . . . . . . . . . . . . . . . . . . .  23
+      Data Convert Functions  . . . . . . . . . . . . . . . .  24
+      File Functions  . . . . . . . . . . . . . . . . . . . .  26
+
+      Restrictions  . . . . . . . . . . . . . . . . . . . . .  28
+      Implementation Restrictions . . . . . . . . . . . . . .  28
+
+
+                                                               Page  1
+      Syntax Notation
+       ßßßßßßßßßßßßßßß
+
+      BOLD              indicates language keywords
+      UPPERCASE
+
+      bold              indicate defined syntactic units
+      lowercase
+
+      [ ]               brackets indicate an optional item
+
+      ...               ellipses mean multiple items are allowed
+
+      < >               angle brackets specify list of alternatives
+                        (choose one)
+
+       |                separates alternatives in a list
+
+
+
+      First column
+       ßßßßßßßßßßßß
+
+      Some special characters may appear in the first column
+      of this document these are:
+
+          -             Something that exists in VM/CMS REXX
+                        and not in this interpreter.
+
+          +             Something that does not exist in
+                        VM/CMS REXX.
+
+          |             Changed!
+
+
+      Installation
+       ßßßßßßßßßßßß
+
+      Make a directory where you will place all the rexx libraries,
+      documents and rexx interpreter. Remember to place rexx directory
+      to dos PATH, and create an environment variable RXLIB in your
+      autoexec.bat, which will point the directory where all rexx
+      libraries are placed.
+      ie.      set rxlib=c:\rexx
+      If you are a 4DOS user you can also use another environment
+      variable like:
+               set .r=c:\rexx\rx.exe
+      where all the files with extension ".R" will now be executable.
+
+                                                               Page  2
+
+      Running
+       ßßßßßßß
+
+      Rexx interpreter calling syntax is:
+             rx [[-]trace] rexx-program [args...]
+      where rexx-program is the filename of the rexx program to run.
+      Extension is also needed.
+      Trace is any of the valid trace commands, see below (trace cmd).
+      Args... are the arguments passed to rexx program
+      ie.   rx awari.r            runs the awari program
+            rx -a awari.r         runs awari with trace=all
+            rx ?r awari.r         runs awari with interactive results trace
+            rx banner.r Hi        runs banner program with argument Hi
+
+      WHEN minus "-" or "-s" is used as a trace cmd, then rexx is
+      forced to run a program typed in STDIN or in the arguments following.
+      ie. To write one line program
+            rx - do i = 1 to 10; say i; end
+      or you can use rexx as a calculator
+            rx - say sin(0.5) * sqrt( 3^2 + 4^2 )
+      If no arguments follows the "-" then rx.exe will wait for input
+      from STDIN. End you program with a Ctrl-Z
+      ie.   rx -    (press return, and type...)
+            do x=0 to 6.28 by 0.1
+               y = trunc(39*(sin(x)+1)) + 1
+               say copies(' ',y) || '*'
+            end
+            <Ctlr-Z>
+      and a sine diagram will be displayed.
+
+                                                         
+
+                                                         
+      Tokens and Terms                                    
+       ßßßßßßßßßßßßßßßß                                   
+                                                          
+      REXX expressions and instructions may contain the following
+      items:
+
+      comment
+          A comment is a sequence of characters (on one or
+          more lines) delimited by /* and */. Nested comments
+          are also valid, as /* hello /* joe */ */
+
+      string
+          A string is a sequence of characters delimited by a
+          single quote or double quote. Use two quotes to
+          obtain one quote inside a string. A string may be
+          specified in hexadecimal if the final quote is
++         followed by an X. If it followed by an H then is
++         treated as a hexadecimal number. Some valid
+          strings are:
+            "Marmita" 'He''s here'  '2ed3'x  '10'h (=16)
+                                                               Page  3
+      number
+          A number is a string of decimal digits with or without
+          a decimal point. A number may be prefixed with a plus
+          or minus sign, and/or written in exponential notation.
+          Some valid numbers are:
+            23  12.07  141 12.2e6  +5  '-3.14'
+
+      symbol
+          A symbol refers to any group of characters from the
+          following selection:
+
+             A-Z, a-z, 0-9, @#$_.?!
+
+          Symbols are always translated to uppercase. Variables
+          are symbols but the first character must not be a
+          digit 0-9 or a dot '.'. Each symbol may consist of
+          up to 250 characters.
+
+      function-call
+          A function-call invokes an internal, external, or
+          built-in routine with 0 to 10 argument strings.
+          The called routine returns a character string.
+          A function-call has the format:
+
+          function-name( [expr][,[expr]...)
+
+          function-name must be adjacent to the left
+          parenthesis, and may be a symbol or a string.
+
+          All procedures can be called as functions or procedures.
+          If a function is called as a procedure ie. call left 'Hello',4
+          then the return string will be returned in the variable
+          RESULT where is this example will contain the string 'Hell'
+
+          ie.   copies('ab',3)  /* will return 'ababab' */
+                'cd'()          /* will call DOS and return
+                                    current directory */
+
+      Expressions                                        
+       ßßßßßßßßßßß                                       
+                                                         
+      Most REXX instructions permit the use of expressions,
+      following normal algebraic style. Expressions can consists
+      of strings, symbols, or functions calls. Expressions are
+      evaluated from left to right, modified by parentheses and
+      the priority of the operators (as ordered below). Parentheses
+      may be used to change the order of evaluation.
+
+      All operations (except prefix operations) act on two items
+      and result in a character string.
+
+      Prefix  + - ^
+            Prefix operations: Plus; Minus; and Not. (For + and -,
+            the item must evaluate to a number; for ^, the item
+            must evaluate to "1" or "0".)
+            ie.    -4         /* -4 */
+                                                               Page  4
+      **
+            Exponentiate. (Both items must evaluate to numbers,
+            and the right-hand item must be a whole number.)
+            ie.    2 ** 3       /* 8 */
+                   2 ** -3      /* 0.125 */
+
+      * / % //
+            Multiply; Divide; Integer Divide; Divide and return the
+            remainder. (Both items must evaluate to numbers.)
+            ie.    4 *  3       /* 12 */
+                   4 /  3       /* 1.333.. */
+                   5 %  3       /* 1 */
+                   5 // 3       /* 2 */
+
+      + -
+            Add; Subtract. (Both items must evaluate to numbers.)
+            ie.    2 + 3.02     /* 5.02 */
+
+      (blank) ||
+            Concatenate: with or without a blank. Abuttal of items
+            causes direct concatenation.
+            ie.    a = 'One'
+                   a  'two'       /* "One two" */
+                   a || 'two'     /* "Onetwo"  */
+
+
+      = == ^= ^== /= /== >
+      < ^> ^< >= <= <> ><
+            Comparisons (arithmetic compare if both items evaluate
+            to a number.) The == operator checks for an exact
+            match.
+            ie.      'marmita' =  ' marmita '   /* 1 */
+                     'marmita' == ' marmita '   /* 0 */
+                     'marmita' ^= ' marmita '   /* 0 */
+                     'marmita' ^==' marmita '   /* 1 */
+
+      &
+            Logical And. (Both items must evaluate to "0" or "1".)
+            ie.    'A'='B' & 'C'='C'  /* 0 */
+
+      | &&
+            Logical Or; Logical Exclusive Or. (Both items must
+            evaluate to "0" or "1".)
+            ie.    'A'='B' |  'C'='C'  /* 1 */
+                   'A'='B' && 'C'='C'  /* 1 */
+
+      In CMS/REXX the results of arithmetic operations are
+      rounded according the setting to NUMERIC DIGITS (default is 9).
+      Here all arithmetic operations follow C arithmetics. For a
+      more detail description look at the INTERNAL.DOC
+                                                               Page  5
+      Instructions                                      
+       ßßßßßßßßßßßß                                     
+                                                        
+      Each REXX instruction is one ore more clauses, the first clause
+      is the one that identifies the instruction. Instructions end
+      with a semicolon or with a new line. One instruction may be
+      continued from one line to the next by using a comma at the end
+      of the line. Open strings or comments are not affected by line
+      ends.
+
+
+      The General Guidelines are:
+       ßßßßßßßßßßßßßßßßßßßßßßßßßßß
+
+      name
+           refers to a variable, which can be assigned any value.
+           name is a symbol with the following exception: the
+           first character may not be a digit or a period. The
+           value of name is translated to uppercase before use, and
+           forms the initial value of the value of the variable.
+           Some valid names are:
+                Fred  COST?  next  index   A.j
+
+      name:
+           is a form of labels for CALL instructions, SIGNAL
+           instructions, and internal function calls. The colon
+           acts as a clause separator.
+
+      template
+           is a parsing template, described in a later section.
+
+      instr
+           is any one of the listed instructions.
+
+
+      The Instructions are:
+       ßßßßßßßßßßßßßßßßßßßßß
+
+      expression
+           the value of expression is issued as a command, normally
+           to the command interpreter or to the specified environment
+           specified by the ADDRESS instruction. Look also the section
+           "Issuing Commands to Host System."
+           ie.         'DIR' '*.exe'
+
+      name = [expr];
+           is an assignment: the variable name is set to the value
+           of expr.
+           ie.       fred = 'sunset'
+                     a    = 1 + 2 * 3
+                     a    =            /* a contains '' */
+                                                               Page  6
+      ADDRESS [<symbol | string> [expr]];
+          redirect commands or a single command to a new
+          environment. ADDRESS VALUE expr may be used
+          for an evaluated environment name.
+          ie.       address int2e 'dir'  /* executes through int2e a dir cmd
+                    address system       /* all the following command will be
+                                            addressed to system */
+                    env = 'dos'
+                    address value env    /* change address to dos */
+
+      ARG <template>;
+          parse argument string(s) given to program or in an
+          internal routine into variables according to template.
+          Arguments are translated into uppercase before the parsing.
+          Short for PARSE UPPER ARG.
+          ie.   /* program is called with args  "autoexec.bat auto.old"
+                arg src dest
+                /* src = "AUTOEXEC.BAT", dest="AUTO.OLD" */
+
+                /* a function is called MARMITA('Bill',3)
+                marmita:
+                arg firstarg, secondarg
+                /* firstarg = "BILL", secondarg = "3" */
+
+      CALL [symbol | string] [<expr>] [,<expr>]... ;
+          call an internal routine, an external routine or program,
+          or a built-in function. Depending on the type of
+          routine called, the variable RESULT contains the result
+          of the routine. RESULT is uninitialized if no result is
+          returned.
+          ie.       call substr 'makedonia',2,3
+                  /* now. variable result = 'ake' */
+                  /* the same can be obtained with */
+                    result = substr('makedonia',2,3)
+
+          In the following sections there is a description of
+          all the built-in rexx functions.
+
+          Internal functions are sequence of instructions inside the
+          same program starting at the label that matches the name in
+          the CALL instruction.
+
+          External routines are like internal but written in
+          a separate module that can be used as a library. In this
+          REXX external routines must be loaded with the built-in
+          function LOAD before the are used (see below).
+
+          As external routines can be used any DOS command or program
+          that uses standard input and output. (LOAD affects only REXX
+          routines)
+                  /* external programs can be called as routines */
+                  /* and the output of the program (to stdout) will */
+                  /* be returned as the result string of the function */
+                    call "dir" "*.exe","/w"    /* or */
+                    files = "dir"('*.exe',"/w")
+                    current_directory = 'cd'()
+                                                               Page  7
+      DO      [ [name=expri  [TO exprt] [BY exprb]
+                [FOR exprf]] | [ FOREVER | exprr ]
+              [UNTIL expru | WHILE exprw] ;
+              [instr]... ;
+      END [symbol] ;
+          DO is used to group many instructions together and
+          optionally executes them repetively.
+       o  Simple DO loop are used to execute a block of instructions
+          often used with IF-THEN statements.
+          Note. Simple DO loops are not affected with
+          ITERATE or LEAVE instructions (see below)
+          ie. If name = 'VIVI' then Do
+                                    i = i + 1
+                                    Say 'Hello Vivi'
+                                    End
+
+       o  Simple repetitive loops.
+          ie.   do 3               /* would display 3 'hello' */
+                   say 'hello'
+                end
+          Note. DO expr, expr must evaluate to an integer number.
+
+                do forever             /* infinite loop, display always */
+                   say 'lupe forever'  /* 'hello' */
+                end
+
+       o  Loops with control variable. name is stepped from expri
+          to exprt in steps of exprb, for a maximum of exprf iterations.
+                do i = 1 to 10 by 3    /* would display the numbers */
+                   say i               /* 1, 4, 7, 10 */
+                end
+          Note. all the expressions are evaluated before the loop is
+          executed and may result to any kind of number, integer or real.
+
+       o  Conditional loops
+            ie.   a = 2                /* would display */
+                  do while a < 5       /*  2  */
+                     say a             /*  4  */
+                     a = a + 2
+                  end
+            Note. exprw and expru are evaluated in each iteration and
+            must result to 0 or 1. WHILE expression is evaluated before
+            each iteration, where UNTIL expression is evaluated at the
+            end of each iteration.
+
+          You can combine them like:
+                  a = 1                  /* would display */
+                  do for 3 while a < 5   /*  1  */
+                     say a               /*  2  */
+                     a = a + 1           /*  3  */
+                  end
+                                                               Page  8
+       DROP name [name]... ;
+          drop (reset) the named variables or group of variables
+          by freeing their memory. It returns them in their original
+          uninitialized state.
+          If an exposed variable is named, the variable itself
+          in the older generation will be dropped!
+          If a stem a specified all variables starting with that stem
+          will be dropped.
+          ie.        j = 2
+                     drop a x.1 y.j   /* resets variables A X.1 and Y.2 */
+                     drop z.          /* resets all variables with names
+                                         starting with Z. */
+
+      EXIT [expr] ;
+          leave the program (with return data, expr). EXIT is
+          the same as RETURN except that all internal routines
+          are terminated.
+          ie.       exit  12*3       /* will exit the program with rc=36 */
+
+      IF expr [;] THEN [;] instr ;
+                 [ELSE [;] instr];
+          if expr evaluates to "1", execute the instruction
+          following the THEN. Otherwise, when expr evaluates to "0",
+          the instruction after ELSE is executed, if ELSE is present.
+          ie.  if name="bill" then say "Hello billy."
+                              else say "Hello stranger"
+
+
+      INTERPRET  expr ;
+          expr is evaluated and then is processed, as it was a
+          part of the program.
+          ie.  cmd = "say 'Hello'"
+               interpret cmd     /* displayes "Hello" */
+
+      ITERATE   [name] ;
+          start next iteration of the innermost repetitive loop
+          (or loop with control variable name).
+          ie.  do i = 1 to 5           /* would display:  1  */
+                  if i=3 then iterate  /*                 2  */
+                  say i                /*                 4  */
+               end                     /*                 5  */
+
+      LEAVE     [name] ;
+          terminate innermost repetitive loop (or loop with control
+          variable name).
+          ie.  do i = 1 to 5           /* would display:  1  */
+                  if i=3 then leave    /*                 2  */
+                  say i
+               end
+
+      LOWER name [name]...
+          translate the values of the specified individual
+          variables to lowercase.
+          ie.   name = 'ViVi'
+                lower name           /* now, name = 'vivi' */
+                                                               Page  9
+      NOP ;
+          dummy instruction, has no effect.
+          ie.   if name='vivi' then nop; else say 'Hello vivi.'
+
+      NUMERIC  DIGITS [expr]  |
+               FORM   [SCIENTIFIC | ENGINEERING] |
+               FUZZ   [expr]  ;
+-         dummy instruction, has no effect, just for compatibility
+-         with VM/CMS REXX.
+
+      PARSE   [UPPER]  + ARG               | [template] ;
+                       | AUTHOR            |
+                       | EXTERNAL          |
+                       | NUMERIC           |
+                       | PULL              |
+                       | SOURCE            |
+                       | VALUE [expr] WITH |
+                       | VAR name          |
+                       + VERSION           +
+          Parse is used to assign data from various sources to
+          one or more variables according to the template
+          (see below for template patterns)
+          o  ARG, parses the argument string(s) passed to the program,
+             subroutine, or function. UPPER first translates the
+             strings to uppercase. See also the ARG instruction.
++         o  AUTHOR parse the author string.
+          o  EXTERNAL, prompts for input and parses the input string
+          o  NUMERIC, parse the current NUMERIC settings.
+          o  PULL, read and parse the next string from rexx stack
+             if not empty otherwise prompts from input
+             See the PULL instruction.
+          o  SOURCE, parse the program source description e.g.
+             "CMS COMMAND FRED EXEC A fred CMS".
+          o  VALUE, parse the value of expr.
+          o  VAR, parse the value of name.
+          o  VERSION, parse the version string of the interpreter.
+
+      PROCEDURE [EXPOSE name [name]...] ;
+          start a new generation of variables within an internal
+          routine. Optionally named variables or groups of
+          variables from an earlier generation may be exposed.
+          If a stem is specified (variable ending in '.' dot, ie 'A.')
+          then every variable starting with this stem will be exposed
+               i = 1; j = 2
+               call myproc
+               exit
+               myproc: procedure expose i     /* would display */
+               say i j                        /* 1 J */
+               return
+                                                               Page 10
+      PULL   [template] ;
+          pops the next string from rexx internal stack. If stack
+          is empty then it prompts for input. Translates it
+          to uppercase and then parses it according to template.
+          Short for PARSE UPPER PULL.
+               push 'Bill Vlachoudis'
+             /* --- many instrs ---- */
+               pull name surname          /* now: name='BILL',         */
+                                          /*      surname='VLACHOUDIS' */
+
+      PUSH   [expr] ;
+          push expr onto head of the rexx queue (stack LIFO)
+
+      QUEUE  [expr] ;
+          add expr to the tail of the rexx queue (stack FIFO)
+
+      RETURN [expr] ;
+          return control from a procedure to the point of its invocation.
+          if expr exits, then it is returned as the result of the
+          procedure.
+                num = 6
+                say num || '! = ' fact(num)
+                exit
+                fact: procedure               /* calculate factorial with */
+                if arg(1) = 0 then return 1   /* recursion */
+                return fact(arg(1)-1) * arg(1) /* displayes: 6! = 720 */
+
+      SAY [expr];
+          evaluate expr and then writes the result to standard output
+          (normally user's console) followed by a newline.
+
+      SELECT ;
+         WHEN expr [;] THEN [;] instr;
+       [ WHEN expr [;] THEN [;] instr; ]
+       [ OTHERWISE [;] [instr]... ];
+      END ;
+          SELECT is used to conditionally process one of several alternatives.
+          Each WHEN expression is evaluated in sequence until
+          one results in "1". instr, immediately following it, is
+          executed and control leaves the block. If no
+          expr evaluated to "1", control passes to the
+          instructions following the OTHERWISE expression
+          that must then be present.
+               num = 10
+               select
+                  when num > 0 then say num 'is positive'
+                  when num < 0 then say num 'is negative'
+                  otherwise  say num 'is zero'
+               end
+                                                               Page 11
+      SIGNAL [name] |
+             [VALUE] expr |
+             <ON | OFF> + ERROR   +      ;
+                        | HALT    |
+                        | NOVALUE |
+                        + SYNTAX  +
+       o  NAME, jump to the label name specified. Any pending
+          instructions, DO ... END, IF, SELECT, and INTERPRET
+          are terminated.
+       o  VALUE, may be used for an evaluated label name.
+       o  ON|OFF, enable or disable exception traps. Condition
+          must be ERROR, HALT, NOVALUE, or SYNTAX. Control
+          passes to the label of the condition name if the event
+          occurs while ON
+               signal vivi
+                 ...
+               vivi:
+                   say 'Hi!'
+
+      TRACE option;
+          Trace according to following option. Only first letter of
+          option is significant.
+          A (All) trace all clauses.
+          C (Commands) trace all commands.
+          E (Error) trace commands with non-zero return codes
+            after execution.
+          I (Intermediates) trace intermediate evaluation
+            results and name substitutions also.
+          L (Labels) trace only labels.
+          N (Negative or Normal) trace commands with negative
+            return codes after execution (default setting).
+          O (Off) no trace.
+          R (Results) trace all clauses and expressions.
+          S (Scan) display rest of program without any
+            execution (shows control nesting).
+-         ! turn command inhibition on or off, and trace
+-           according to next character.
+          ? turn interactive debug (pause after trace) on or
+            off, and trace according to next character.
+          null  restores the default tracing actions.
+          TRACE VALUE expr may be used for an evaluated
+          trace setting.
+
+      UPPER name [name]...
+          translate the values of the specified individual
+          variables to uppercase.
+             name = 'Vivi'
+             upper name         /* now: name = 'VIVI' */
+                                                               Page 12
+                                                         
+                                                        
+      Templates for ARG, PULL, and PARSE                
+       ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß               
+                                                        
+      The PULL, ARG and PARSE instructions use a template to
+      parse a string.
+
+      - The simplest template is a list of variables where is
+        each of them is assigned one word from the string, except
+        the last variable in the list which will contain the rest
+        of the string.
+           parse value "one two   three four " with a b c
+             now a="one"; b="two"; c="three four"
+           parse value "one two   three four " with a b c d e
+             now a="one"; b="two"; c="three"; d="four" and e=""
+        A dot '.' can be in the place of one or more variables,
+        it is used as a place-holder.
+           parse value "one two   three four " with a . . d
+             now a="one"; d="four"
+
+      - A more complex parsing is to use patterns for triggering.
+           number    - which specifies an absolute position in string
+                       1 - is the first character in string
+         [+|-]number - signed numbers are used as a relative positioning
+
+           parse value "one two   three four " with 2 a 6 b
+             now a="ne t"; b="wo   three four "
+           parse value "one two   three four " with 2 a +2 b
+             now a="ne"; b=" two   three four "
+
+         string    - may be used as a target position.
+           parse value "marmita/bill/vivi' with a '/' b '/' c
+             now a="marmita"; b="bill"; c="vivi"
+         (name)    - also as a target may be used a variable
+                     encolsed in parenthesis
+           t = "%%"
+           parse value "aabbcc%%ddeeff%%gg%%" with . (t) middle (t) .
+             now middle="ddeeff"
+
+      A comma can be used as a "trigger" to move to the next
+      string when there is more than one to be parsed (e.g. when
+      there is more than one argument string to a routine).
+           call myproc 'Hi',3,4
+           exit
+           myproc:
+           parse arg first, second, third  /* now first="Hi"  */
+           ...                             /*     second=3    */
+                                           /*     third=4     */
+                                                               Page 13
+      Compound Variable Names                            
+       ßßßßßßßßßßßßßßßßßßßßßßß                           
+                                                         
+      name may be "compound" in that it may be composed of
+      several parts (separated by periods) some of which may have
+      variable values. The parts are then substituted independently,
+      to generate a fully resolved name. In general,
+
+      s0.s1.s2.---.sn         is substituted to form
+
+      d0.v1.v2.---.vn         where d0 is uppercase of s0, and
+                              v1-vn are values of s1-sn
+
+      This facility may be used for traditional arrays,
+      content-addressable arrays, and other indirect addressing
+      modes. As an example, the sequence:
+
+        J = 5;  a.j = "fred";
+
+      would assign fred to the variable A.5.
+
+      The stem of name (i.e. that part up to and including the
+      first ".") may be specified on the DROP and PROCEDURE
+      EXPOSE instructions and affect all variables starting with
+      that stem. An assignment to a stem assigns the new value to
+      all possible variables with that stem.
+
+                                                        
+                                                        
+                                                        
+      Special Variables                                 
+       ßßßßßßßßßßßßßßßßß                                
+                                                        
+      There are three special variables:
+
+      SIGL
+             holds the line number of the instruction that
+             was last executed before control of program was
+             transferred to another place. This can be caused
+             by a SIGNAL instruction, a CALL instruction or
+             a trapped error condition.
+
+      RC
+             is set to the errorlevel (return-code) after execution
+             of every command (to host).
+
+      RESULT
+             is set by a RETURN instruction in a CALLed procedure.
+
+                                                               Page 14
+      Issuing Commands to Host System
+       ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+
+      In this REXX version all the commands are executed via
+      command interpreter (normally COMMAND.COM)
+         So valid environments are:
+          o  COMMAND, SYSTEM, DOS, '': load and execute command
+             interpreter from COMSPEC env. variable.
++         o  INT2E: executes commands via interrupt 2E
++            the undocumented back door to COMMAND.COM.
++            Normally it is faster then environments COMMAND etc.
++            because there is no need to load an extra copy of
++            COMMAND.COM before execute the command.
++            Note. Commands executed through INT2E cannot be
++            redirected to stack. There is a BUG that causes
++            sometimes a Fatal error. While executing a cmd
++            via int2e and you press Control-C you may have
++            some very strange results.
+
+      A command is an expression, which may include
+      function-calls, arithmetic operations, and so on. Operators
+      or other special characters (for example, "(" or "*") must
+      be specified in a string if they are to appear in the
+      issued command.
+
+|     Commands to environments COMMAND, SYSTEM may return its
+|     result to REXX stack when at the end of cmd appears the
+|     string (STACK, (FIFO or (LIFO (with the parenthesis).
+|                    "dir (stack"
+|     If the string STACK> appears in the beginning of cmd, then
+|     stack is redirected to stdin of cmd.
+|                    "stack> date"
+|     Stack is flushed after redirecting it to stdin.
+
+      Redirection to or from STACK will create a temporary file
+      with name like OAA.AAB that will be erased. It is nice
+      to redirect all your temporary pipe files to a temporary
+      directory. To do this set in your AUTOEXEC.BAT a new line
+      containing:
+                 SET TEMP=C:\TEMP
+      where C:\TEMP is the temporary directory (which must exist)
+      and you must have Read/Write authority.
+      (Look also below at "LOAD" function )
+
+                                                               Page 15
+      Interactive Debugging
+       ßßßßßßßßßßßßßßßßßßßßß
+
+      You can enter the interactive debuging either by executing
+      a TRACE instruction with a prefix "?" or when calling RX
+      from dos command line issue as a first argument the trace
+      option:   C:> rx ?r awari.r
+      In interactive debug, interpreter pauses before the execution
+      of the instructions that are to be traced and prompts for
+      input. You may do one of following things:
+       o  Enter a null line to continue execution.
+       o  Enter a list of REXX instructions, which are
+          interpreted immediately (DO-END instructions must be
+          complete, etc.).
+
+          During the execution of the string, no tracing takes
+          place, except that non-zero return codes from host
+          commands are displayed. Execution of a TRACE instruction
+          with the "?" prefix turns off interactive debug mode.
+          Other TRACE instructions affect the tracing that occurs
+          when normal execution continues.
+                                                               Page 16
+
+      Built-in Functions                                 
+       ßßßßßßßßßßßßßßßßßß                                
+                                                         
+      The following are the built-in REXX functions.
+      Which are divided into the following categories:
+      REXX, STRING, WORD, MATH, Data CONVERT
+      and FILE functions
+
+      Any other program or internal command of system interpreter
+      (COMMAND.COM) may be used as rexx function, if it is called
+      in quotes. ie    directory = 'cd'(), or files = "dir"("*.*","/w")
+      Current directory or the directory defined by the environment
+      variable TEMP is used for the temporary pipe files.
+
+      Rexx Functions
+       ßßßßßßßßßßßßßß
+
++     ADDR(symbol)
++          returns the physical address of symbol contents.
++          (Normalized for MSDOS, ie  seg:ofs = seg*16+ofs)
+          i = 5;   say addr('i')  /* something like 432009  decimal*/
+                   say addr('j')  /* -1, is J variable doesn't exist */
+
+      ADDRESS()
+           return the current environment for commands.
+                   say address()    /* would display:  SYSTEM */
+
+      ARG([n[,option]])
+          ARG()  - returns the number of arguments
+          ARG(n) - return then nth argument
+          ARG(n,option) - option may be Exist or Omitted
+              (only the first letter is significant) test
+               whether the nth argument exists or is Omitted.
+               Returns "0" or "1"
+                   call myproc 'a',,2
+                   ....
+                   myproc:
+                   say arg()           /*  3  */
+                   say arg(1)          /* 'a' */
+                   say arg(2,'O')      /*  1  */
+                   say arg(2,'E')      /*  0  */
+                                                               Page 17
+      DATATYPE(string(,type))
+          DATATYPE(string) - returns "NUM" is string is a valid
+              REXX number, otherwise returns "CHAR".
+          DATATYPE(string,type) - returns "0" or "1" if string
+              is of the specific type:
+            - Alphanumeric:   characters  A-Z, a-z and 0-9
+            - Bits:           characters  '0' or '1'
+            - Lowercase:      characters  a-z
+            - Mixed:          characters  A-Z, a-z
+            - Number:         is a valid REXX number
+            - Symbol:         characters  A-Z, a-z, 0-9, @%_.!#
+            - Uppercase:      characters  A-Z
+            - Whole-number:   a valid REXX whole number
+            - X (heXadecimal):a valid HEX number
+          (only the first letter of type is required)
+
++         The special type 'Type' returns the either INT, REAL,
++         or STRING the way the variable is hold into memory
++         Usefull when you combine that with INTR function
+
+              say datatype('123')        /* NUM */
+              say datatype('21a')        /* CHAR */
+              say datatype(01001,'B')    /*  1  */
++             say datatype(i,'T')        /* maybe STRING */
+
+
+      DATE((option))
+          return current date in the format: dd Mmm yyyy
+              say date()      /* 14 Feb 1993 */
+          or formats the output according to option
+           - Days        returns number of days since 1-Jan as an integer
+           - European    returns date in format dd/mm/yy
+           - Month       returns the name of current month, ie. March
+           - Normal      returns the date in the default format dd Mmm yyyy
+           - Ordered     returns the date in the format yy/mm/dd (useful
+                         for sorting)
+           - Sorted      returns the date in the format yyyymmdd (suitable
+                         for sorting)
+           - USA         returns the date in the format mm/dd/yy
+           - Weekday     returns the name of current day of week ie. Monday
+
+      DESBUF()
+          destroys the system stack, and returns the number of
+          lines in system stack.
+                push 'hello'      /* now stack has one item */
+                call  desbuf      /* stack is empty, and RESULT=1 */
+
+      DIGITS()
+           returns the current setting of NUMERIC DIGITS.
+           Not used.
+
+      ERRORTEXT(n)
+           returns the error message for error number n.
+                say errortext(8)   /* "Unexpected THEN or ELSE" */
+                                                               Page 18
+      FORM()
+           returns the current setting of NUMERIC FORM.
+           Not used.
+
+      FUZZ()
+           returns the current setting of NUMERIC FUZZ.
+           Not used.
+
+      GETENV(varname)
+           returns the environment variable "varname"
+           ie.      say getenv("PATH")
+
++     INTR( num, reg-string )
++         executes a 80x86 soft-interrupt.
++         num = interrupt number, and reg-string is a string
++         in the format "ax=hex-num bx=hex-num ...."
++         returns in the same format the registers
+              regs = intr('10'h, 'ax=0003')  /* will change video mode */
+              say regs   /* AX=0003 BX=7B82 CX=....  FLAGS=C-PAS */
+          flags are returned as a string with characters
+              C - for carry, P-parity, A-Auxiliary carry, S-sign,
+              O - overflow, T-trap, I-interrupt ...
+
++     LOAD ( file )
++         load a rexx file so it can be used as a library.
++         load first searches the current directory and on
++         error it searches the directory defined by the
++         environment variable RXLIB.
++         (It would be nice to add in your AUTOEXEC.BAT the command
++             SET RXLIB=C:\PATH\WHERE\REXX\IS
++             SET TEMP=C:\TEMP
++          a temporary directory, maybe is allready set from Ms-Windows)
++         returns
++           "-1" when file is already loaded
++            "0" on success
++            "1" on error opening the file
+
+      MAKEBUF()
+          create a new system stack, and returns the number of
+          system stacks created until now (plus the initial one).
+                push 'hello'; say queued()  /* display 1           */     
+          	call makebuf                /* create a new buffer */
+                push 'aloha; say queued()   /* display again 1     */
+
+      QUEUED()
+           return the number of lines in the rexx stack
+              push 'aha'
+              say  queued()    /* 1 */
+              push 'hello'
+              say  queued()    /* 2 */
+              call desbuf
+              say  queued()    /* 0 */
+
+      SOUNDEX(word)
+          return a 4 character soundex code of word
+
+      SOURCELINE([n])
+          return the number of lines in the program, or the nth
+          line.
+              say sourceline()  /* maybe 100 */
+              say sourceline(1) /* maybe "/**/" */
+                                                               Page 19
+      STORAGE((address(,(length)(,data))))
+|         returns the current free memory size expressed as a
+|         decimal string if no arguments are specified.
+|         Otherwise, returns length bytes from the user's memory
+|         starting at address.  The length is in decimal;
+|         the default is 1 byte.  The address is a decimal number
+|         (Normalized address for MSDOS ie. seg:ofs = seg*16+ofs)
+|         If data is specified, after the "old" value has been
+|         retrieved, storage starting at address is overwritten
+|         with data (the length argument has no effect on this).
+               say storage()                   /* maybe 31287 */
+               say storage(1000,3)             /* maybe "MZa" */
+               a = "Hello"
+               say storage(addr('a'),5,'aaa')  /* "Hello" */
+               say a                           /* aaalo */
+
+      SYMBOL(name)
+          return "BAD" if name is not a valid REXX variable
+          name,  "VAR" if name has been used as a variable, or
+          "LIT" if it has not.
+               i = 5
+               say symbol('i')       /* VAR */
+               say symbol(i)         /* LIT */
+               say symbol(':asd')    /* BAD */
+
+      TIME((option))
+          return the local time in the format: hh:mm:ss
+          if option is specified time is formated as:
+            - Civil    returns time in format  hh:mmxx  ie.  10:32am
+            - Elapsed  returns elapsed time since rexx timer was reset
+                       or from begging of program in format  ssssss.uu
+            - Hours    returns number of hours since midnight
+            - Long     returns time and milliseconds   hh:mm:ss.uu
+            - Minutes  returns number of minutes since midnight
+            - Normal   returns time in format hh:mm:ss
+            - Reset    returns elapsed time in format ssssss.uu (like
+                       Elapsed) and resets rexx internal timer.
+            - Seconds  returns number of seconds since midnight
+
+      TRACE((option))
+          returns current tracing option. If option is specified
+          then sets to new tracing option. Look up instruction TRACE.
+             say trace()      /* normally 'N' */
+
+      VALUE(name)
+          returns the value of the variable name.
+             i = 5;  j = i
+             say value(j)       /*  5  */
+             say value('j')     /* 'i' */
+                                                               Page 20
++     VARTREE((symbol)(,option))
++         returns the binary tree of the variables in the format
++         var = "value"  <cr>
++         if option is specified and the first letter is 'Depth'
++         then it prints out the binary tree in the format
++         depth var = "value"  <cr>  (used for balancing of variables )
++         symbol may be nothing for main bin-tree or a stem
++         for an array bin-tree ie. "B."
++         VARTREE is an easy way to store all or some variables
++         in a file or in stack and restores them later.
++             call write "vars.$$$", vartree()  /* stores all variables   */
++             exit                              /* in the file "vars.$$$" */
++         on a later run you can do
++          do until eof("vars.$$$")        /* this will read all variables */
++             interpret read("vars.$$$")   /* from file, and restore them  */
++          end
++         WARNING! VARTREE is not fully implemented and may not work when
++         variables have non-printable characters.
+
+
+      String Functions
+       ßßßßßßßßßßßßßßßß
+
+      ABBREV(information,info[,length])
+           tests whether info is an abbreviation of information.
+           returns "1" on true, else returns "0". If length is specified
+           then searching takes place only for the first length characters.
+               abbrev("billy","bill")       /* 1 */
+               abbrev("billy","bila")       /* 0 */
+               abbrev("billy","bila",3)     /* 1 */
+
+
+      CENTRE(string,length[,pad])
+      CENTER(string,length[,pad])
+           returns string centered in a padded string of length length.
+               center("rexx",2)            /* 'ex' */
+               center("rexx",8)            /* '  rexx  ' */
+               center("rexx",8,'-')        /* '--rexx--' */
+
+      COMPARE(string1,string2[,pad])
+           returns "0" if string1==string2, else if returns the
+           index of the first nonmatching character. Shorter
+           string is padded with pad if necessary
+               compare('bill','bill')      /* 0 */
+               compare('bill','big')       /* 3 */
+               compare('bi  ','bi')        /* 0 */
+               compare('bi--*','bi','-')   /* 5 */
+
+      COPIES(string,n)
+           returns n concatenated copies of string.
+               copies('bill',3)  /* 'billbillbill' */
+                                                               Page 21
+      DELSTR(string,n[,length])
+           delete substring of string starting at the nth
+           character and of length length.
+               delstr('bill',3)           /* 'bi' */
+               delstr('bill',2,2)         /* 'bl' */
+
+      INDEX(haystack,needle[,start])
+           return the position of needle in haystack,
+           beginning at start.
+               index('bilil','il')         /* 2 */
+               index('bilil','il',3)       /* 4 */
+
+      INSERT(new,target[,[n][,[length][,pad]]])
+           insert the string new of length length into the string
+           target, after the nth character (n can be 0)
+               insert('.','BNV',2)         /* 'BN.V' */
+               insert('.','BNV',2,2)       /* 'BN. V' */
+               insert('','BNV',2,2,'.')    /* 'BN..V' */
+
+      LASTPOS(needle,haystack[,start])
+           return the position of the last occurrence of needle in
+           haystack, beginning at start.
+               lastpos('il','bilil')       /* 4 */
+               lastpos('il','bilil',4)     /* 2 */
+
+      LEFT(string,length[,pad])
+           return a string of length length with string left
+           justified in it.
+               left('Hello',2)        /* 'He' */
+               left('Hello,10)        /* 'Hello     ' */
+
+      LENGTH(string)
+           return the length of string
+               length('Hello')        /* 5 */
+
+      OVERLAY(new,target[,[n][,[length][,pad]]])
+           overlay the string new of length length onto string
+           target, beginning at the nth character.
+               overlay('.','abcd',2)         /* 'a.cd' */
+               overlay('.','abcd')           /* '.bcd' */
+               overlay('.','abcd',5,3,'+')   /* 'abcd+.+' */
+
+      POS(needle,haystack[,start])
+           return the position of needle in haystack,
+           beginning at start.
+               pos('ll','Bill')         /* 3 */
+
+      REVERSE(string)
+           swap string, end-to-end
+               reverse('Bill')         /* 'lliB' */
+
+      RIGHT(string,length[,pad])
+           returns length righmost characters of string.
+               right('abcde',2)       /* 'de' */
+                                                               Page 22
+      SUBSTR(string,n[,[length][,pad]])
+           return the substring of string that begins at the nth
+           character and is of length length. Default pad is space.
+               substr('abcde',2,2)      /* 'bc' */
+               substr('abcde',2)        /* 'bcde' */
+               substr('abcde',4,3,'-')  /* 'de-' */
+
+      STRIP(string[,[<"L"|"T"|"B">][,char]])
+           returns string stripped of Leading, Trailing, or Both
+           sets of blanks or other CHARs. Default is "B".
+               strip(' abc  ')          /* 'abc' */
+               strip(' abc  ','t')      /* ' abc' */
+               strip('-abc--',,'-')     /* 'abc' */
+
+      TRANSLATE(string[,[tableo][,[tablei][,pad]]])
+           translate characters in tablei to associated characters
+           in tableo. If neither table is specified, convert to
+           uppercase.
+               translate('abc')             /* 'ABC' */
+               translate('aabc','-','a')    /* '--bc' */
+               translate('aabc','-+','ab')  /* '--+c' */
+
+      VERIFY(string,reference[,[option][,start]])
+           return the index of the first character in string that
+           is not also in reference. if "Match" is given, then
+           return the result index of the first character in
+           string that is in reference.
+               verify('abc','abcdef')       /* 0 */
+               verify('a0c','abcdef')       /* 2 */
+               verify('12a','abcdef','m')   /* 3 */
+
+      XRANGE([start][,end])
+           return all characters in the range start through end.
+               xrange('a','e')       /* 'abcde' */
+               xrange('fe'x,'02'x)   /* 'feff000102'x */
+
+
+      Word Functions
+       ßßßßßßßßßßßßßß
+
+      DELWORD(string,n[,length])
+           delete substring of string starting at the nth
+           word and of length length words.
+               delword('one day in the year',3)   /* 'one day' */
+               delword('one day in the year',3,2) /* 'one day year' */
+
+      FIND(string,phrase)
+           returns the word number of the first word of phrase
+           in string. Returns "0" if phrase is not found
+               find('one  day  in  the  year','in      the')  /* 3 */
+
+      JUSTIFY(string,length[,pad])
+           justify string to both margins (the width of margins
+           equals length), by adding pads between words.
+               justify('one day in the year',22) /*'one  day  in  the year'
+                                                               Page 23
+      SUBWORD(string,n[,length])
+           return the substring of string that begins at the nth
+           word and is of length length words.
+               subword('one day in the year',2,2) /* 'day in' */
+
+      SPACE(string(,(n)(,pad)))
+           formats the blank-delimited words in string with n pad
+           characters between each word.
+               space(''one day in the year',2) /*'one  day  in  the  year' */
+
+      WORDS(string)
+           return the number of words in string
+               words('One day   in the year')    /* 5 */
+
+      WORD(string,n)
+           return the nth word in string
+               word('one day in the year',2)    /* 'day' */
+
+      WORDINDEX(string,n)
+           return the position of the nth word in string
+               wordindex('one day in the year',2) /* 5 */
+
+      WORDLENGTH(string,i)
+           return the length of the nth word in string
+               wordlength('one day in the year',2) /* 3 */
+
+      WORDPOS(phrase,string[,start])
+           returns the word number of the first word of phrase
+           in string. Returns "0" if phrase is not found
+               wordpos('day in','one day in the year') /* 2 */
+
+
+      Math Functions
+       ßßßßßßßßßßßßßß
+
+      ABS(number)
+           return absolute value of number
+               abs(-2.3)            /* 2.3 */
+
+      FORMAT(number[,[before][,[after][,[expp][,expt]]]])
+          rounds and formats number with before integer digits
+          and after decimal places ( expp and expt are ignored! )
+               format(2.66)          /* 3 */
+               format(2.66,1,1)      /* 2.7 */
+
+      MAX(number[,number]..])
+           returns the largest of given numbers.
+               max(2,3,1,5)         /* 5 */
+
+      MIN(number[,number]..])
+           returns the smallest of given numbers.
+               min(2,3,1,5)         /* 1 */
+                                                               Page 24
+      RANDOM([min][,[max][,seed]])
+          returns a pseudorandom nonnegative whole number in the
+          range min to max inclusive.
+
+      SIGN(number)
+           return the sign of number ("-1","0" or "1").
+              sign(-5.2)            /* -1 */
+              sign( 0.0)            /*  0 */
+              sign( 5.2)            /*  1 */
+
+      TRUNC(number(,n))
+          returns the integer part of number, and n decimal places.
+          The default n is zero.
+              trunc(2.6)            /* 2 */
+
+      The following are common math functions that return one
+      real number.
++     ACOS ( num )     Arc-cosine
++     ASIN ( num )     Arc-sine
++     ATAN ( num )     Arc-tangent
++     COS  ( num )     Cosine
++     COSH ( num )     Hyperbolic cosine
++     EXP  ( num )     Exponiate
++     LOG  ( num )     Natural logarithm
++     LOG10( num )     Logarithm of base 10
++     POW10( num )     Power with base 10
++     SIN  ( num )     Sine function
++     SINH ( num )     Hyperbolic sine
++     SQRT ( num )     Square root
++     TAN  ( num )     Tangent
++     TANH ( num )     Hyperbolic tangent
++
++     POW  ( a,b )     raises a to power b
+
+
+      Data Convert Functions
+       ßßßßßßßßßßßßßßßßßßßßßß
+
+      BITAND(string1[,[string2][,pad]])
+          logically AND the strings, bit by bit
+             bitand('61'x,'52'x)         /* '40'x */
+             bitand('6162'x,'5253'x)     /* '4042'x */
+             bitand('6162'x,,'FE'x)      /* '6062'x */
+
+      BITOR(string1[,[string2][,pad]])
+          logically OR  the strings, bit by bit
+
+      BITXOR(string1[,[string2][,pad]])
+          logically XOR the strings, bit by bit
+                                                               Page 25
+      C2D(string[,n])
+         Character to Decimal. The binary representation of
+         string is converted to a number (unsigned unless the
+         length n is specified).
+             c2d('09'x)                /* 9 */
+             c2d('ff40')               /* 65344 */
+             c2d('81'x,1)              /* -127 */
+             c2d('81'x,2)              /* 129 */
+
+      C2X(string)
+           Character to Hexadecimal
+             c2x('abc')                /* '616263' */
+             c2x('0506'x)              /* '0506'   */
+
+      D2C(wholenumber[,n])
+          Decimal to Character. Return a string of length n,
+          which is the binary representation of the number.
+             d2c(5)                    /* '5'x */
+             d2c(97)                   /* 'a'  */
+
+      D2X(wholenumber[,n])
+          Decimal to Hexadecimal. Return a string of length n,
+          which is the hexadecimal representation of the number.
+             d2x(5)                    /* '05' */
+             d2x(97)                   /* '61' */
+
+      X2D(hex-string[,n])
+         Hexadecimal to Decimal. hex-string is converted to a
+         number (unsigned unless the length n is specified)
+             x2d('61')                 /* 97 */
+
+      X2C(string)
+          Hexadecimal to Character
+             x2c('616263')             /* 'abc' */
+                                                               Page 26
+      File Functions
+       ßßßßßßßßßßßßßß
+
++    General
++         Files can be referenced as a string containing the name
++         of the file ie "TEST.R" or the file handle that is
++         returned from OPEN function. (Normally the second way
++         if prefered when you want to open 2 or more files with
++         the same name).
++         There are always 5 special files:
++           Handle - filename    Description
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++             0      <STDIN>     Standard input
++             1      <STDOUT>    Standard output
++             2      <STDERR>    Standard error
++             3      <STDAUX>    Standard auxiliary file, ie COM1:
++             4      <STDPRN>    Standard printer file, ie LPT1:
++         All open files are closed at the end of the program
++         from REXX interpreter except in the case of error
+
++     CLOSE( file )
++         closes an opened file.
++         file may be string or the handle number
+             call close 'BINGO'  /* these two cmds are exactly the same */
+             call close hnd      /* where  hnd=open('BINGO','w') */
+
++     EOF( file )
++         returns 1 at eof, -1 when file is not opened
++         and 0 otherwise
+             if eof(hnd) then signal finito
+
++     FLUSH( file )
++         flush a stream to disk
+             call flush 'BINGO'
+
++     OPEN( file, mode )
++         opens a file. (mode follows C prototypes:
++           "r" - for read, "w" - for write, "t" - for text,
++           "a" - for append, "b" - for binary, "+" - to
++           open file for read/write )
++         and returns the handle number for that file
++         -1 if file is not found!
+             hnd = open('BINGO','w')
+             if hnd = -1 then do
+                say 'error opening file BINGO.'
+                ...
+             end
+                                                               Page 27
++     READ( (file)(,length) )
++         returns reads length bytes from file.
++       o if length is not specified then return one line from file
++       o if file is not opened, it will be opened automatically
++         in "r" mode
++       o if file is ommited, it is assumed to be <STDIN>
+              kbdin = read()              /* reads one line from stdin */
+              keypressed = read(,1)       /*  -//-     char   -//-     */
+              linein = read('BINGO')      /* reads one line from file */
+              linein = read(hnd)          /*         -//-             */
+              ch = read('data',1)         /* if file 'data' is not opened
+                                          then it will be opened in "r" mode
+                                          and ch will contain one character.*/
+
++     SEEK( file (,offset (,"TOF","CUR","EOF")))
++         move file pointer to offset  relative from TOF  (default)
++         and return new file pointer
++       * this is an easy way to determine the filesize,
++         by seeking at the end, filesize = seek(file,0,"EOF")
+              call  seek 'data',0,"TOF"   /* sets the pointer to the start
+                                             of the file */
+              filepos = seek('data',-5,"CUR") /* moves pointer 5 bytes
+                                     backwards, and returns current pos */
+
++     WRITE( (file)(, string(,)))
++         writes the string to file.
++         returns the number of bytes written
++       * if a comma is specified as a third argument then
++         newline is added at the end of the string
++         WARNING: comma at the end of a line causes line continuation!
+             This can be avoided either with a semicolon directly after the
+             comma, or with a any variable as a third argument that it
+             will be ommited. ie.
+                call write 'data','First line',;    /* note the semicolon */
+                or
+                call write 'data','Second line',nl
++       * if neither string is specified then results to one
++         newline in the file
++       * if file is not opened, it will be opened automatically
++         in "w" mode
++       * if file is ommited, it is assumed to be <STDOUT>
+              call write ,'a'              /* writes 'a' to stdout */
+              call write '','one line',nl  /* write 'one line' to stdout */
+              call write 'data','bingo'    /* writes 'bingo' to 'data' file*/
+                                                               Page 28
+
+      Restrictions
+       ßßßßßßßßßßßß
+
+      There are no restrictions on the length or content of
+      manipulated character data (other than your Machine size).
++     (For Msdos REXX there is a limit up to 1 segment 64Kb for
++     each manipulated character data).
+
+
+      Implementation Restrictions
+       ßßßßßßßßßßßßßßßßßßßßßßßßßßß
+
+      The name of a variable or label, and the length of a literal
+      string may not exceed 250 bytes. More characters than 250
+      will be truncated.
+
+-     The internal represantation of a clause (after removal of
+-     comments, extra blanks etc.) may not exceed 500 bytes.
+
+|     Numbers follows C restrictions, thus integers are long and
+|     real numbers are held as double.
+
+|     The FOR and simple counts on a DO instruction, and the
+|     right-hand term of an exponentiation may not exceed maximum
+|     long number.
+
+      The control stack (for DO, IF, CALL, etc.) is limited to
+      internal stack of the computer. For MsDos rexx the maximum
+      recursive level will be round 70-80.
+
+      Functions and subroutines cannot be called with more than
+      10 arguments.
+
+|     Input & Output cannot be redirected for commands executed
+|     through INT2E.

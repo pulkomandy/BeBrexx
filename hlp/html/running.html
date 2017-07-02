@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Running </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="install.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="tokens.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Running
+</H1>
+
+      Rexx interpreter calling syntax is:
+             <I>rx [[-]trace] rexx-program [args...]</I>
+      where rexx-program is the filename of the rexx program to run.
+      Extension is also needed.
+      Trace is any of the valid trace commands, see below (trace cmd).
+      Args... are the arguments passed to rexx program
+      ie.   <I>rx awari.r</I>            runs the awari program
+            <I>rx -a awari.r</I>         runs awari with trace=all
+            <I>rx ?r awari.r</I>         runs awari with interactive results trace
+            <I>rx banner.r Hi</I>        runs banner program with argument Hi
+
+      WHEN minus "-" or "-s" is used as a trace cmd, then rexx is
+      forced to run a program typed in STDIN or in the arguments following.
+      ie. To write one line program
+            <I>rx - <B>do i = 1 to 10; say i; end</B></I>
+      or you can use rexx as a calculator
+            <I>rx - <B>say sin(0.5) * sqrt( 3^2 + 4^2 )</B></I>
+      If no arguments follows the "-" then rx.exe will wait for input
+      from STDIN. End you program with a Ctrl-Z
+      ie.   <I>rx -</I>    (press return, and type...)
+            <B>do x=0 to 6.28 by 0.1
+               y = trunc(39*(sin(x)+1)) + 1
+               say copies(' ',y) || '*'
+            end</B>
+            <Ctlr-Z>
+      and a sine diagram will be displayed.
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="install.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="tokens.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<TITLE> BREXX, Data Convert Functions </TITLE>
+</HEAD>
+<BODY>
+<TABLE>
+<TD><A HREF="math.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="fileio.html"> Next </A>
+</TABLE>
+<HR>
+<PRE>
+<H1>
+      Data Convert Functions
+</H1>
+
+      <B>BITAND(string1[,[string2][,pad]])</B>
+          logically AND the <B>strings</B>, bit by bit
+             <B>bitand('61'x,'52'x)</B>         /* '40'x */
+             <B>bitand('6162'x,'5253'x)</B>     /* '4042'x */
+             <B>bitand('6162'x,,'FE'x)</B>      /* '6062'x */
+
+      <B>BITOR(string1[,[string2][,pad]])</B>
+          logically OR  the <B>string</B>s, bit by bit
+
+      <B>BITXOR(string1[,[string2][,pad]])</B>
+          logically XOR the <B>string</B>s, bit by bit
+
+      <B>C2D(string[,n])</B>
+         Character to Decimal. The binary representation of
+         <B>string</B> is converted to a number (unsigned unless the
+         length <B>n</B> is specified).
+             <B>c2d('09'x)</B>                /* 9 */
+             <B>c2d('ff40')</B>               /* 65344 */
+             <B>c2d('81'x,1)</B>              /* -127 */
+             <B>c2d('81'x,2)</B>              /* 129 */
+
+      <B>C2X(string)</B>
+           Character to Hexadecimal
+             <B>c2x('abc')</B>                /* '616263' */
+             <B>c2x('0506'x)</B>              /* '0506'   */
+
+      <B>D2C(wholenumber[,n])</B>
+          Decimal to Character. Return a <B>string</B> of length <B>n</B>,
+          which is the binary representation of the number.
+             <B>d2c(5)</B>                    /* '5'x */
+             <B>d2c(97)</B>                   /* 'a'  */
+
+      <B>D2X(wholenumber[,n])</B>
+          Decimal to Hexadecimal. Return a <B>string</B> of length <B>n</B>,
+          which is the hexadecimal representation of the number.
+             <B>d2x(5)</B>                    /* '05' */
+             <B>d2x(97)</B>                   /* '61' */
+
+      <B>X2D(hex-string[,n])</B>
+         Hexadecimal to Decimal. <B>hex-string</B> is converted to a
+         number (unsigned unless the length <B>n</B> is specified)
+             <B>x2d('61')</B>                 /* 97 */
+
+      <B>X2C(string)</B>
+          Hexadecimal to Character
+             <B>x2c('616263')</B>             /* 'abc' */
+</PRE>
+<HR>
+<TABLE>
+<TD><A HREF="math.html"> Previous </A>
+<TD><A HREF="rx.html"> Top </A>
+<TD><A HREF="fileio.html"> Next </A>
+</TABLE>
+</BODY>
+</HTML>
