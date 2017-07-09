@@ -234,9 +234,9 @@ routines_list[] = {
 	{ "REVERSE",    R_S          ,f_reverse    },
 	{ "RIGHT",      R_SIoC       ,f_right      },
 	{ "SEEK",       R_seek       ,f_seek       },
-#ifdef __BEOS__
-        { "SETPROMPT",  R_setprompt  ,f_setprompt  },
-        { "SHOWLIST",   R_showlist   ,f_showlist   },
+#ifdef __HAIKU__
+	{ "SETPROMPT",  R_setprompt  ,f_setprompt  },
+	{ "SHOWLIST",   R_showlist   ,f_showlist   },
 #endif
 	{ "SIGN",       R_abs_sign   ,f_sign       },
 #ifdef MATH

@@ -77,7 +77,7 @@
 #include "convert.h"
 #include "instruct.h"
 
-#ifdef __BEOS__
+#ifdef __HAIKU__
 #include "be_main.h"
 #endif
 

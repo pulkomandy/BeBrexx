@@ -253,7 +253,7 @@ void I_cmd(Lstr *A, Lstr *env )
       int2e(STR(A));
    }
 #endif
-#ifdef __BEOS__
+#ifdef __HAIKU__
    else if (1) { //be_app_exists(env)) {
       ASCIIZ(A);
       rc = redirect_be_app(A, env);
