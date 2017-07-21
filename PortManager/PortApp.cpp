@@ -148,5 +148,5 @@ status_t PortApp::GetSupportedSuites(BMessage *message)
 
 bool PortApp::QuitRequested(void)
 {
-   return(false);
+   return true;
 }
