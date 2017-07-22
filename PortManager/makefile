@@ -34,7 +34,7 @@ SRCS= PortApp.cpp
 		
 #	specify the resource files to use
 #	full path or a relative path to the resource file can be used.
-RSRCS= PortApp.rsrc
+RDEFS= PortApp.rdef
 
 # @<-src@ 
 #%}
