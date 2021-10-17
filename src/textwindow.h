@@ -7,6 +7,7 @@
 #ifndef __TWINDOW_H__
 #define __TWINDOW_H__
 
+#include <FilePanel.h>
 #include <Message.h>
 #include <Window.h>
 

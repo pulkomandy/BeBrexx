@@ -619,8 +619,8 @@ void print_message(BMessage *message)
 void add_message_contents(TextBuffer &tb, BMessage *msg, int32 level)
 {
 	int32 count;
-	int32 i, sizefound, j;
-	ulong typefound;
+	ssize_t i, sizefound, j;
+	type_code typefound;
 	char *namefound;
 	void *voidptr;
 	BMessage a_message;
@@ -658,11 +658,11 @@ extern void be_set_var(char *, char *);
 extern void be_set_cvar(char *, char *, char *);
 }
 
-long message_to_result(BMessage *msg, int32 total)
+long message_to_result(BMessage *msg, long total)
 {
 	int32 count;
-	int32 i, sizefound, j;
-	ulong typefound;
+	ssize_t i, sizefound, j;
+	type_code typefound;
 	char *namefound;
 	void *voidptr;
 	BMessage a_message;

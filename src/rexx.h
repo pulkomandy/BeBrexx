@@ -100,7 +100,7 @@
 #elif defined(__MPW__)
 #  define   rx_version     "BREXX R1.3.2_MPW "##__DATE__##" PARADOX SUPPORT"
 #else
-#  define   rx_version     "BREXX R1.3.2 "##__DATE__
+#  define   rx_version     "BREXX R1.3.2 " __DATE__
 #endif
 #define   author      "Bill N. Vlachoudis (bnv@nisyros.physics.auth.gr or V.Vlachoudis@cern.ch)\n" \
                       "This version by W.G.J. Langeveld (langeveld@verifiedlogic.com)"
