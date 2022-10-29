@@ -269,7 +269,7 @@ status_t Hey(BMessenger* target, char* argv[], int32* argx, int32 argc, BMessage
 		}
 		result=add_data(&the_message, argv, argx);
 		if(result!=B_OK){
-			if(result==B_FILE_NOT_FOUND){
+			if(result==B_ENTRY_NOT_FOUND){
 				beprintf("File not found!\n");
 			}else{
 				beprintf("Invalid 'to...' value format!\n");
@@ -309,7 +309,7 @@ status_t add_with(BMessage *to_message, char *argv[], int32 *argx, int32 argc)
 			{
 				result=add_data(to_message, argv, argx);
 				if(result!=B_OK){
-					if(result==B_FILE_NOT_FOUND){
+					if(result==B_ENTRY_NOT_FOUND){
 						beprintf("File not found!\n");
 					}else{
 						beprintf("Invalid 'with...' value format!\n");
@@ -581,13 +581,13 @@ status_t add_data(BMessage *to_message, char *argv[], int32 *argx)
 		}
 		
 		if(get_ref_for_path(valuestring+5, &file_ref)!=B_OK){
-			return B_FILE_NOT_FOUND;
+			return B_ENTRY_NOT_FOUND;
 		}
 		
 		// check if the ref is valid
 		BEntry entry;
-		if(entry.SetTo(&file_ref)!=B_OK) return B_FILE_NOT_FOUND;
-		//if(!entry.Exists())  return B_FILE_NOT_FOUND;
+		if(entry.SetTo(&file_ref)!=B_OK) return B_ENTRY_NOT_FOUND;
+		//if(!entry.Exists())  return B_ENTRY_NOT_FOUND;
 		
 		// add both ways, refsreceived needs it as "refs" while scripting needs "data"
 		to_message->AddRef("refs", &file_ref);
@@ -619,8 +619,9 @@ void print_message(BMessage *message)
 void add_message_contents(TextBuffer &tb, BMessage *msg, int32 level)
 {
 	int32 count;
-	int32 i, sizefound, j;
-	ulong typefound;
+	int32 i, j;
+	ssize_t sizefound;
+	type_code typefound;
 	char *namefound;
 	void *voidptr;
 	BMessage a_message;
@@ -661,8 +662,9 @@ extern void be_set_cvar(char *, char *, char *);
 long message_to_result(BMessage *msg, int32 total)
 {
 	int32 count;
-	int32 i, sizefound, j;
-	ulong typefound;
+	int32 i, j;
+	ssize_t sizefound;
+	type_code typefound;
 	char *namefound;
 	void *voidptr;
 	BMessage a_message;

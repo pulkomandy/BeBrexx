@@ -12,6 +12,8 @@
 
 #include "consolebe.hh"
 
+class BFilePanel;
+
 class TextWindow : public BWindow {
 public:
    TextWindow(BRect frame, const char *title, int32 useframe = 0);

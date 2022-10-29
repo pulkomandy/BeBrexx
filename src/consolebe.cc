@@ -57,11 +57,11 @@ extern "C" {
 
 int ConsoleBe::get_char(void)
 {
-   int c = -1;
+   addr_t c = -1;
    while (c == -1) {
       if (list->Lock()) {
          if (!list->IsEmpty()) {
-            c = (int) list->ItemAt(0);
+            c = (addr_t) list->ItemAt(0);
             list->RemoveItem((int32) 0);
             list->Unlock();
             break;

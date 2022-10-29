@@ -10,10 +10,6 @@
 #include <ctype.h>
 
 
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
-
 #include <OS.h>
 #include <Application.h>
 #include <Message.h>
@@ -167,7 +163,7 @@ long find_app(BMessenger *the_application, char *appname)
    be_roster->GetAppList(&team_list);
 
    for (int32 i = 0; i < team_list.CountItems(); i++) {
-      teamid = (team_id) team_list.ItemAt(i);
+      teamid = (team_id)(addr_t) team_list.ItemAt(i);
       be_roster->GetRunningAppInfo(teamid, &appinfo);
       if (strncmp(appinfo.signature, appname, strlen(appname)) == 0) {
          *the_application = BMessenger(appinfo.signature);
@@ -319,7 +315,7 @@ char *be_app_list(Lstr *appname, char pad, char listtype)
       BMessenger the_application;
 
       for (int ix = teamlist.CountItems() - 1; ix >= 0; ix--) {
-         teamid = (team_id) teamlist.ItemAt(ix);
+         teamid = (team_id)(addr_t) teamlist.ItemAt(ix);
          be_roster->GetRunningAppInfo(teamid, &appinfo);
 
          the_application = BMessenger(appinfo.signature);

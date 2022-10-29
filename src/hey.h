@@ -18,7 +18,7 @@ __declspec(dllexport) void add_message_contents(TextBuffer &tb, BMessage *msg, i
 __declspec(dllexport) char *get_datatype_string(int32 type);
 __declspec(dllexport) char *format_data(int32 type, char *ptr, long size);
 __declspec(dllexport) void print_message(BMessage *message);
-__declspec(dllexport) long message_to_result(BMessage *message, long total);
+__declspec(dllexport) long message_to_result(BMessage *message, int32 total);
 __declspec(dllexport) long has_standard_string_suite(BMessenger *);
 __declspec(dllexport) char *id_to_string(long ID, char *here);
 __declspec(dllexport) bool is_valid_char(uint8 c);

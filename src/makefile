@@ -104,7 +104,7 @@ DEBUGGER =
 COMPILER_FLAGS =
 
 #	specify additional linker flags
-LINKER_FLAGS =
+LINKER_FLAGS = -lstdc++
 
 
 ## include the makefile-engine
