@@ -55,7 +55,7 @@ RSRCS= brexx.rsrc
 #		naming scheme you need to specify the path to the library
 #		and it's name
 #		library: my_lib.a entry: my_lib.a or path/my_lib.a
-LIBS= PortManager be tracker
+LIBS= PortManager be tracker $(STDCPPLIBS)
 		
 #	specify additional paths to directories following the standard
 #	libXXX.so or libXXX.a naming scheme.  You can specify full paths
@@ -104,7 +104,7 @@ DEBUGGER =
 COMPILER_FLAGS =
 
 #	specify additional linker flags
-LINKER_FLAGS = -lstdc++
+LINKER_FLAGS = 
 
 
 ## include the makefile-engine
